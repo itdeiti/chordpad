@@ -41,7 +41,8 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "tone": "^15.1.22"
   },
   "devDependencies": {
     "@commitlint/cli": "19.5.0",

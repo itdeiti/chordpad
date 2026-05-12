@@ -5,10 +5,12 @@ import SongToolbar from "components/molecules/song-toolbar";
 import ChordBuilder from "components/organisms/chord-builder";
 import SectionEditor from "components/organisms/section-editor";
 import ChordChart from "components/organisms/chord-chart";
-import { useLibrary } from "hooks/use-library";
+import { PlaybackControls, usePlayback } from "features/playback";
+import { useLibrary } from "state/use-library";
 
 function App() {
   const { library, song, dispatch } = useLibrary();
+  const playback = usePlayback(song);
   const activeSection =
     song.sections.find((s) => s.id === song.activeSectionId) ??
     song.sections[0];
@@ -57,42 +59,66 @@ function App() {
           </div>
         </header>
 
-        <SectionTabs
-          sections={song.sections}
-          activeId={song.activeSectionId}
-          onSelect={(id) => dispatch({ type: "SELECT_SECTION", id })}
-          onAdd={(name) => dispatch({ type: "ADD_SECTION", name })}
-          onRename={(id, name) =>
-            dispatch({ type: "RENAME_SECTION", id, name })
-          }
-          onDelete={(id) => dispatch({ type: "DELETE_SECTION", id })}
-        />
+        <div data-print-hide>
+          <SectionTabs
+            sections={song.sections}
+            activeId={song.activeSectionId}
+            onSelect={(id) => dispatch({ type: "SELECT_SECTION", id })}
+            onAdd={(name) => dispatch({ type: "ADD_SECTION", name })}
+            onRename={(id, name) =>
+              dispatch({ type: "RENAME_SECTION", id, name })
+            }
+            onDelete={(id) => dispatch({ type: "DELETE_SECTION", id })}
+          />
+        </div>
 
-        <SongToolbar
-          songKey={song.key}
-          displayMode={song.displayMode}
-          hasChords={hasContent}
-          onTranspose={(semitones) =>
-            dispatch({ type: "TRANSPOSE", semitones })
-          }
-          onSetKey={(key) => dispatch({ type: "SET_KEY", key })}
-          onSetMode={(mode) => dispatch({ type: "SET_DISPLAY_MODE", mode })}
-        />
+        <div data-print-hide className="flex flex-wrap items-end gap-3">
+          <SongToolbar
+            songKey={song.key}
+            displayMode={song.displayMode}
+            hasChords={hasContent}
+            onTranspose={(semitones) =>
+              dispatch({ type: "TRANSPOSE", semitones })
+            }
+            onSetKey={(key) => dispatch({ type: "SET_KEY", key })}
+            onSetMode={(mode) => dispatch({ type: "SET_DISPLAY_MODE", mode })}
+          />
+          <PlaybackControls
+            playing={playback.playing}
+            tempo={playback.tempo}
+            hasChords={hasContent}
+            onPlay={playback.play}
+            onStop={playback.stop}
+            onSetTempo={playback.setTempo}
+          />
+        </div>
 
-        <SectionEditor
-          section={activeSection}
-          songKey={song.key}
-          roman={song.displayMode === "roman"}
-          onDeleteChord={(chordId) =>
-            dispatch({
-              type: "DELETE_CHORD",
-              sectionId: activeSection.id,
-              chordId,
-            })
-          }
-        />
+        <div data-print-hide>
+          <SectionEditor
+            section={activeSection}
+            songKey={song.key}
+            roman={song.displayMode === "roman"}
+            currentChordId={playback.currentChordId}
+            onDeleteChord={(chordId) =>
+              dispatch({
+                type: "DELETE_CHORD",
+                sectionId: activeSection.id,
+                chordId,
+              })
+            }
+          />
+        </div>
 
-        <ChordBuilder staging={song.staging} dispatch={dispatch} />
+        <div data-print-hide>
+          <ChordBuilder staging={song.staging} dispatch={dispatch} />
+        </div>
+
+        <h2
+          data-print-only
+          className="text-2xl font-bold text-black mb-4"
+        >
+          {song.name}
+        </h2>
 
         <ChordChart song={song} />
       </div>

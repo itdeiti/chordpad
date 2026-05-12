@@ -1,14 +1,21 @@
 import ChordPill from "components/molecules/chord-pill";
-import type { RootNote, Section } from "app/types";
+import type { RootNote, Section } from "domain/types";
 
 interface Props {
   section: Section;
   songKey: RootNote;
   roman: boolean;
+  currentChordId: string | null;
   onDeleteChord: (chordId: string) => void;
 }
 
-function SectionEditor({ section, songKey, roman, onDeleteChord }: Props) {
+function SectionEditor({
+  section,
+  songKey,
+  roman,
+  currentChordId,
+  onDeleteChord,
+}: Props) {
   return (
     <div className="rounded-lg border border-gray-800 bg-gray-600/10 p-4 bg-blend-color-burn">
       <div className="text-xs uppercase tracking-wide text-gray-400 mb-3">
@@ -26,6 +33,7 @@ function SectionEditor({ section, songKey, roman, onDeleteChord }: Props) {
               chord={c}
               songKey={songKey}
               roman={roman}
+              playing={c.id === currentChordId}
               onDelete={() => onDeleteChord(c.id)}
             />
           ))}
