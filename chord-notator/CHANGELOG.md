@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/itdeiti/chordpad/compare/v2.1.1...v3.0.0) (2026-05-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* add dragndrop for chords
+
+### Features
+
+* add dragndrop for chords ([4abecb4](https://github.com/itdeiti/chordpad/commit/4abecb4cc8a569036096bfd81d6516e548c70a81))
+
 ## [2.1.1](https://github.com/itdeiti/chordpad/compare/v2.1.0...v2.1.1) (2026-05-12)
 
 
