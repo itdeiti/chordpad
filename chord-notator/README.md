@@ -152,20 +152,67 @@ The Print button just calls `window.print()` — no extra DOM, the same componen
 
 ```bash
 npm install
-npm dev      # http://localhost:3000
-npm build    # tsc + vite build → dist/
-npm lint
+npm run dev      # http://localhost:3000
+npm run build    # tsc + vite build → dist/
+npm run lint
 ```
 
-Type checking runs as part of `npm build`; `npm lint` is ESLint-only.
+Type checking runs as part of `npm run build`; `npm run lint` is ESLint-only.
 
 Path aliases: `app/*`, `components/*`, `domain/*`, `state/*`, `features/*` (configured in [vite.config.ts](vite.config.ts) and [tsconfig.app.json](tsconfig.app.json)).
 
+Recommended workflow for any non-trivial change:
+
+1. Write the feature under the right layer (`domain/` for pure logic, `state/` for reducers/storage, `features/` for self-contained bounded contexts, `components/` for UI primitives).
+2. Run `npm run build` to confirm TypeScript strict passes.
+3. Stage and commit with a Conventional Commits message — `lint-staged` will run Prettier + ESLint on staged files and `commitlint` will validate the message.
+
+## Commit conventions
+
+Commits must follow [Conventional Commits](https://www.conventionalcommits.org/). [commitlint.config.js](commitlint.config.js) and a Husky `commit-msg` hook enforce this on every commit; the GitHub Actions release workflow reads these commits to compute version bumps and changelog entries.
+
+Common types:
+
+- `feat:` — new feature (minor version bump)
+- `fix:` — bug fix (patch bump)
+- `feat!:` or `BREAKING CHANGE:` in the body — breaking change (major bump)
+- `chore:`, `docs:`, `style:`, `refactor:`, `test:` — no version bump but appear in the changelog under "Miscellaneous"
+
+Example:
+
+```text
+feat(playback): add tempo slider to playback controls
+
+Slider drives transport.bpm.value live; BBS-scheduled events rescale
+automatically so the slider works mid-playback.
+```
+
+A `scope` in parentheses is optional but useful for grouping changes by area (`playback`, `share`, `notation`, `state`, etc.).
+
+## Releases
+
+[release-please](https://github.com/googleapis/release-please) automates versioning + changelog generation. The action lives in [.github/workflows/release-please.yml](../.github/workflows/release-please.yml) at the repo root, configured by [release-please-config.json](../release-please-config.json) and [.release-please-manifest.json](../.release-please-manifest.json).
+
+How it works:
+
+1. On every push to `main`, the action scans commits since the last release tag and (re-)opens a single Release PR titled something like `chore(main): release chordpad 1.1.0`.
+2. The PR contains a bumped `package.json` version, an updated `CHANGELOG.md` grouped by Conventional Commit type, and a manifest bump.
+3. While the PR stays open, the action keeps rebasing it as more commits land.
+4. Merging the PR creates a git tag (`v1.1.0`) and a matching GitHub Release with the same notes.
+
+**One-time setup** in the GitHub repo settings: **Settings → Actions → General → Workflow permissions** must allow GitHub Actions to create and approve pull requests. Without this, the action can't open the release PR.
+
+The CHANGELOG lives at [CHANGELOG.md](CHANGELOG.md) (alongside this README, inside `chord-notator/`).
+
 ## Deploy
 
-GitHub Pages is wired via [.github/workflows/deploy.yml](../.github/workflows/deploy.yml). Push to `main`, the workflow builds and publishes to `https://<user>.github.io/chordpad/`. The Vite `base` is set to `/chordpad/` in [vite.config.ts](vite.config.ts) — change it if you fork under a different repo name.
+GitHub Pages auto-deploys every push to `main` via [.github/workflows/deploy.yml](../.github/workflows/deploy.yml). The workflow builds the Vite app from `chord-notator/` and publishes `dist/` to `https://<user>.github.io/chordpad/`. The Vite `base` is set to `/chordpad/` in [vite.config.ts](vite.config.ts) — change it if you fork under a different repo name.
 
-Dependabot is configured at `.github/dependabot.yml` to bump npm and GitHub Actions weekly, with minor/patch updates grouped.
+Deploy and release are intentionally **independent**: every push to `main` deploys (including the release-please merge commit), and releases are cut on top of whatever is already live. If you'd rather gate deploys on releases, swap the deploy workflow's trigger from `push: branches: [main]` to `release: types: [published]` and drop the `concurrency` group.
+
+## Dependencies
+
+Dependabot is configured at [.github/dependabot.yml](../.github/dependabot.yml) at the repo root. Weekly checks for both npm (the `chord-notator/` package) and GitHub Actions; minor/patch npm updates are grouped into a single PR, majors get their own PR. All Dependabot PRs use the `chore(deps): ...` prefix to align with the commitlint rules above.
 
 ## Out of scope (deferred)
 
