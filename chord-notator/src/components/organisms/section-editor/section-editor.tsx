@@ -8,7 +8,7 @@ interface Props {
 
 function SectionEditor({ section, onDeleteChord }: Props) {
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-4">
+    <div className="rounded-lg border border-gray-800 bg-gray-600/10 p-4 bg-blend-color-burn">
       <div className="text-xs uppercase tracking-wide text-gray-400 mb-3">
         {section.name}
       </div>
