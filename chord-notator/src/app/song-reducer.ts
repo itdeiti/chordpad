@@ -1,4 +1,5 @@
 import type {
+  Beats,
   Chord,
   Extension,
   Quality,
@@ -11,6 +12,7 @@ import type {
 const emptyStaging: Staging = {
   quality: "major",
   extensions: [],
+  beats: 4,
 };
 
 function uuid(): string {
@@ -47,6 +49,7 @@ export type Action =
   | { type: "SET_QUALITY"; quality: Quality }
   | { type: "TOGGLE_EXTENSION"; ext: Extension }
   | { type: "SET_BASS"; bass: RootNote | undefined }
+  | { type: "SET_BEATS"; beats: Beats }
   | { type: "CLEAR_STAGING" }
   | { type: "COMMIT_CHORD" }
   | { type: "DELETE_CHORD"; sectionId: string; chordId: string };
@@ -119,6 +122,9 @@ export function songReducer(song: Song, action: Action): Song {
     case "SET_BASS":
       return withStaging(song, { bass: action.bass });
 
+    case "SET_BEATS":
+      return withStaging(song, { beats: action.beats });
+
     case "CLEAR_STAGING":
       return { ...song, staging: null };
 
@@ -130,6 +136,7 @@ export function songReducer(song: Song, action: Action): Song {
         quality: song.staging.quality,
         extensions: [...song.staging.extensions],
         bass: song.staging.bass,
+        beats: song.staging.beats,
       };
       return {
         ...song,

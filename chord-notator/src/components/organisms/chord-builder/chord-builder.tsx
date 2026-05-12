@@ -10,7 +10,7 @@ interface Props {
   dispatch: (a: Action) => void;
 }
 
-const DEFAULT_STAGING: Staging = { quality: "major", extensions: [] };
+const DEFAULT_STAGING: Staging = { quality: "major", extensions: [], beats: 4 };
 
 function ChordBuilder({ staging, dispatch }: Props) {
   const view = staging ?? DEFAULT_STAGING;
@@ -29,6 +29,8 @@ function ChordBuilder({ staging, dispatch }: Props) {
     <div className="space-y-4 rounded-lg border border-gray-800 bg-gray-900/40 p-4">
       <StagingPreview
         staging={staging}
+        beats={view.beats}
+        onSetBeats={(beats) => dispatch({ type: "SET_BEATS", beats })}
         onAdd={() => dispatch({ type: "COMMIT_CHORD" })}
         onClear={() => dispatch({ type: "CLEAR_STAGING" })}
       />

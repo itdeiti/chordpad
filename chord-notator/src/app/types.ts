@@ -21,12 +21,17 @@ export type Quality = (typeof QUALITIES)[number];
 export const EXTENSIONS = ["7", "maj7", "m7", "add9", "sus2", "sus4"] as const;
 export type Extension = (typeof EXTENSIONS)[number];
 
+export const BEAT_OPTIONS = [1, 2, 3, 4] as const;
+export type Beats = (typeof BEAT_OPTIONS)[number];
+export const BEATS_PER_BAR = 4;
+
 export interface Chord {
   id: string;
   root: RootNote;
   quality: Quality;
   extensions: Extension[];
   bass?: RootNote;
+  beats: Beats;
 }
 
 export interface Section {
@@ -40,6 +45,7 @@ export interface Staging {
   quality: Quality;
   extensions: Extension[];
   bass?: RootNote;
+  beats: Beats;
 }
 
 export interface Song {

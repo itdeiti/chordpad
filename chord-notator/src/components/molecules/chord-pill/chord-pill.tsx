@@ -9,12 +9,16 @@ interface Props {
 }
 
 function ChordPill({ chord, onDelete }: Props) {
+  const text = formatChord(chord);
   return (
-    <span className="inline-flex items-center gap-2 rounded-md bg-gray-800 border border-gray-700 px-3 py-1.5 font-mono text-base text-gray-100">
-      {formatChord(chord)}
+    <span className="inline-flex items-baseline gap-2 rounded-md bg-gray-800 border border-gray-700 px-3 py-1.5 font-mono text-base text-gray-100">
+      <span>{text}</span>
+      {chord.beats !== 4 && (
+        <span className="text-xs text-gray-500">·{chord.beats}</span>
+      )}
       <IconButton
         Icon={XMarkIcon}
-        label={`Remove ${formatChord(chord)}`}
+        label={`Remove ${text}`}
         onClick={onDelete}
       />
     </span>

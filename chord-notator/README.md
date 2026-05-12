@@ -1,115 +1,51 @@
-<p align='center'>
-  <img src='https://i.imgur.com/KVmyXyo.png' alt='Vital - Vite Starter Template' width='600'/>
-</p>
+# Chordpad
 
-<p align='center'>
-Mocking up web app with <b>Vital</b><sup><em>(speed)</em></sup><br>
-</p>
+A fast button-driven chord chart editor. Tap a root note, layer modifiers, set a beat duration, commit — then move to the next section. Output is monospace-aligned shorthand that pastes cleanly into any plain-text context (Slack, Discord code blocks, READMEs, notes apps).
 
-<br>
+## How it works
 
-<p align='center'>
-<a href="https://vital.josepvidal.dev">Live Demo</a>
-</p>
+**Sections** — every song has tabs (`Intro`, `Verse`, `Pre-Chorus`, `Chorus`, `Bridge`, `Outro`, `Inst` by default). Add or rename freely; delete only allowed when empty.
 
-<br>
+**Building a chord** — pick a root (C through B), pick quality (maj / min / dim / aug), toggle extensions (`7`, `maj7`, `m7`, `add9`, `sus2`, `sus4`), optionally pick a slash bass. The staging preview shows the resulting symbol in real time.
 
-## Features
+**Beats per chord** — `[1] [2] [3] [4]` next to the Add Chord button. Defaults to 4 (one chord per bar). Set to 2 for two chords per bar, 1 for stabs, etc.
 
-- ⚡️ [Vite 7](https://vitejs.dev/) - Next generation frontend tooling
-- ⚛️ [React 19](https://react.dev/) - Latest version with improved performance
-- 🦾 [TypeScript 5.9](https://www.typescriptlang.org/) - Strongly typed JavaScript
-- 🎨 [Tailwind CSS v4](https://tailwindcss.com/) - Latest utility-first CSS framework with CSS-based config
-- 👑 [Atomic Design organization](https://bradfrost.com/blog/post/atomic-web-design/) - Component architecture
-- 🗂 [Path aliases](https://github.com/vitejs/vite/issues/88#issuecomment-762415200) - Clean imports
-- 😃 [Hero Icons](https://heroicons.com/) - Beautiful hand-crafted SVG icons
-- 🤖 **LLM-ready** - Comprehensive AI assistance docs ([CLAUDE.md](CLAUDE.md), [AGENTS.md](AGENTS.md), [BUGBOT.md](BUGBOT.md))
-- ☁️ Deploy on Netlify or Vercel, zero-config
+**Add Chord** (or Enter) commits the staged chord into the active section. **Clear** (or Esc) resets the staging area without committing.
 
-### Code Quality
+**Chart output** — every section with chords is rendered as bar-packed monospace:
 
-- [ESLint 9](https://eslint.org/) - Find and fix problems in JavaScript/TypeScript
-- [Prettier 3](https://prettier.io/) - Opinionated code formatter
-- [Commitlint](https://commitlint.js.org/) - Lint commit messages
-- [lint-staged](https://github.com/okonet/lint-staged) - Run linters on git staged files
-
-### Dev Tools
-
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react) - Official React plugin for Vite
-- [PostCSS](https://postcss.org/) - Transform CSS with JavaScript
-- [Netlify](https://www.netlify.com/) / [Vercel](https://vercel.com/) - Zero-config deployment
-
-## Try it now!
-
-### GitHub Template
-
-[Create a repo from this template on GitHub](https://github.com/jvidalv/vital/generate).
-
-### Clone to local
-
-If you prefer to do it manually with the cleaner git history
-
-```bash
-npx degit jvidalv/vital my-vital-app
-cd my-vital-app
-yarn # If you don't have yarn installed, run: npm install -g yarn
+```text
+Verse  | C  /  /  /  | F  /  C  /  | G  /  /  /  |
+Chorus | Am /  /  /  | F  /  C  G  | C  /  /  /  |
 ```
 
-## Checklist
+`/` means "hold previous chord for this beat." Chords with `beats < 4` show a muted `·N` annotation on their pill so you can spot non-bar-length chords at a glance.
 
-When you use this template, try follow the checklist to update your info properly
+## Notation conventions
 
-- [ ] Rename `name` and `author` fields in `package.json`
-- [ ] Change the author name in `LICENSE`
-- [ ] Change the title in `index.html`
-- [ ] Change the favicon in `public`
-- [ ] Modify the manifest in `public`
-- [ ] Clean up the README's
+- Quality suffixes: `m`, `dim`, `aug`. Major has no suffix.
+- Extensions append directly: `Cm7`, `Gadd9`, `Dsus4`.
+- Slash chords: `G/B`.
+- Bar lines: `|`. Beats per bar: 4 (currently fixed).
+- Incompatible extensions are disabled in the UI (e.g. `maj7` / `m7` are hidden when quality is `minor`, `dim`, or `aug`).
 
-And, enjoy :)
+## Stack
 
-## Usage
+Vite 7, React 19, TypeScript 5.9 (strict), Tailwind CSS v4 (CSS-first config in [src/index.css](src/index.css)), Heroicons. Atomic Design layout under [src/components/](src/components/). State lives in a single `useReducer` ([src/app/song-reducer.ts](src/app/song-reducer.ts)).
 
-### Development
-
-Just run and visit http://127.0.0.1:3000/
+## Develop
 
 ```bash
-yarn dev
+yarn install
+yarn dev      # http://localhost:3000
+yarn build    # tsc + vite build → dist/
+yarn lint
 ```
 
-### Build
+## Deploy
 
-To build the App, run
+GitHub Pages is wired via [.github/workflows/deploy.yml](../.github/workflows/deploy.yml). Push to `main`, the workflow builds and publishes to `https://<user>.github.io/chordpad/`. The Vite `base` is set to `/chordpad/` in [vite.config.ts](vite.config.ts) — change it if you fork under a different repo name.
 
-```bash
-yarn build
-```
+## Out of scope (for now)
 
-And you will see the generated file in `dist` that ready to be served.
-
-## Deployment
-
-### Deploy on Netlify
-
-Go to [Netlify](https://app.netlify.com/start) and select your repository, `OK` along the way, and your App will be live in a minute.
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/jvidalv/vital)
-
-### Deploy on Vercel
-
-Go to [Vercel](https://vercel.com/new) and select your repository, Vercel will detect Vite automatically and configure the build settings for you. Your App will be live in a minute.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/jvidalv/vital)
-
-**Note:** Both platforms automatically detect Vite projects and configure:
-- **Build Command**: `yarn build`
-- **Output Directory**: `dist`
-- **Install Command**: `yarn install`
-
-## Why
-
-I have created several React apps recently. Setting the configs up is kinda the bottleneck for me to make the ideas simply come true within a very short time.
-
-So I made this starter template for myself to create apps more easily, along with some good practices that I have learned from making those apps. Feel free to tweak it or even maintains your own forks.
+Transposition, Roman-numeral / Nashville modes, audio playback, persistence (localStorage / cloud), undo/redo, drag-reorder, configurable beats-per-bar.
