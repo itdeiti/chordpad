@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import RootGrid from "components/molecules/root-grid";
 import ModifierPanel from "components/molecules/modifier-panel";
 import StagingPreview from "components/molecules/staging-preview";
-import type { SongAction } from "app/song-reducer";
-import type { Staging } from "app/types";
+import type { SongAction } from "state/song-reducer";
+import type { Staging } from "domain/types";
 
 interface Props {
   staging: Staging | null;

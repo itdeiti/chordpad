@@ -1,4 +1,4 @@
-import { transposeSong } from "app/transpose";
+import { transposeSong } from "domain/theory/transpose";
 import type {
   Beats,
   Chord,
@@ -9,7 +9,7 @@ import type {
   Section,
   Song,
   Staging,
-} from "app/types";
+} from "domain/types";
 
 const emptyStaging: Staging = {
   quality: "major",

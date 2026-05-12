@@ -3,8 +3,8 @@ import {
   songReducer,
   uuid,
   type SongAction,
-} from "app/song-reducer";
-import type { Library, Song } from "app/types";
+} from "state/song-reducer";
+import type { Library, Song } from "domain/types";
 
 export type LibraryAction =
   | SongAction

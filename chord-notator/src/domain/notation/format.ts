@@ -6,7 +6,7 @@ import {
   type Section,
   type Song,
   type Staging,
-} from "app/types";
+} from "domain/types";
 
 const ROMAN_NUMERALS = [
   "I",

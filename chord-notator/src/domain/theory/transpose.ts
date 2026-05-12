@@ -1,4 +1,4 @@
-import { ROOT_NOTES, type Chord, type RootNote, type Song } from "app/types";
+import { ROOT_NOTES, type Chord, type RootNote, type Song } from "domain/types";
 
 export function transposeRoot(root: RootNote, semitones: number): RootNote {
   const i = ROOT_NOTES.indexOf(root);

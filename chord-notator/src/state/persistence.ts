@@ -1,6 +1,6 @@
-import { initialLibrary } from "app/library-reducer";
-import { uuid } from "app/song-reducer";
-import type { Library, Song } from "app/types";
+import { initialLibrary } from "state/library-reducer";
+import { uuid } from "state/song-reducer";
+import type { Library, Song } from "domain/types";
 
 const STORAGE_KEY = "chordpad:song";
 const STORAGE_VERSION = 2;

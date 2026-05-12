@@ -1,4 +1,4 @@
-import type { Song } from "app/types";
+import type { Song } from "domain/types";
 
 const HASH_PREFIX = "#s=";
 

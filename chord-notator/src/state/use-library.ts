@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef } from "react";
-import { activeSong, libraryReducer } from "app/library-reducer";
-import { loadLibrary, saveLibrary } from "app/persistence";
-import { clearHash, decodeSongFromHash } from "app/share";
+import { activeSong, libraryReducer } from "state/library-reducer";
+import { loadLibrary, saveLibrary } from "state/persistence";
+import { clearHash, decodeSongFromHash } from "features/share";
 
 export function useLibrary() {
   const [library, dispatch] = useReducer(libraryReducer, undefined, loadLibrary);

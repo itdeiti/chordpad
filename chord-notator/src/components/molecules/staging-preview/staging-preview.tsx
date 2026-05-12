@@ -1,5 +1,5 @@
-import { formatChord } from "app/format-chord";
-import { BEAT_OPTIONS, type Beats, type Staging } from "app/types";
+import { formatChord } from "domain/notation/format";
+import { BEAT_OPTIONS, type Beats, type Staging } from "domain/types";
 
 interface Props {
   staging: Staging | null;

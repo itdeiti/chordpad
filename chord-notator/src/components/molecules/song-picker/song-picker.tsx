@@ -5,7 +5,7 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import type { Library } from "app/types";
+import type { Library } from "domain/types";
 
 interface Props {
   library: Library;

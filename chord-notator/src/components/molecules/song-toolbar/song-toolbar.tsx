@@ -1,5 +1,5 @@
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { ROOT_NOTES, type DisplayMode, type RootNote } from "app/types";
+import { ROOT_NOTES, type DisplayMode, type RootNote } from "domain/types";
 
 interface Props {
   songKey: RootNote;
@@ -27,7 +27,7 @@ function SongToolbar({
   onSetMode,
 }: Props) {
   return (
-    <div className="flex flex-wrap items-end gap-3">
+    <>
       <div className="space-y-1">
         <div className={labelClass}>Root note</div>
         <div className={groupClass}>
@@ -40,12 +40,12 @@ function SongToolbar({
           >
             <MinusIcon className="w-4 h-4" />
           </button>
-          <div className="flex items-center border-x border-edge bg-surface/40">
+          <div className="flex items-center border-x border-edge bg-surface/40 w-30">
             <select
               value={songKey}
               onChange={(e) => onSetKey(e.target.value as RootNote)}
               aria-label="Song root note"
-              className="h-full bg-transparent text-gray-100 font-mono text-sm px-2 focus:outline-none cursor-pointer appearance-none"
+              className="w-full -full bg-transparent text-gray-100 font-mono text-sm px-2 focus:outline-none cursor-pointer appearance-none"
             >
               {ROOT_NOTES.map((n) => (
                 <option key={n} value={n} className="bg-surface">
@@ -98,7 +98,7 @@ function SongToolbar({
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -7,8 +7,8 @@ import {
   type Extension,
   type Quality,
   type RootNote,
-} from "app/types";
-import { isExtensionAllowed } from "app/song-reducer";
+} from "domain/types";
+import { isExtensionAllowed } from "state/song-reducer";
 
 interface Props {
   quality: Quality;

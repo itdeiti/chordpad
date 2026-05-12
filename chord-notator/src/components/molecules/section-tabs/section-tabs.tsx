@@ -1,7 +1,7 @@
 import { useState, KeyboardEvent } from "react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import IconButton from "components/atoms/icon-button";
-import type { Section } from "app/types";
+import type { Section } from "domain/types";
 
 interface Props {
   sections: Section[];

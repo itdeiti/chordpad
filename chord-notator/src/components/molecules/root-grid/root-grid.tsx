@@ -1,5 +1,5 @@
 import ChordButton from "components/atoms/chord-button";
-import { ROOT_NOTES, type RootNote } from "app/types";
+import { ROOT_NOTES, type RootNote } from "domain/types";
 
 interface Props {
   value?: RootNote;
