@@ -16,6 +16,12 @@ interface ScheduledEvent {
   beats: number;
 }
 
+function beatsToBbs(beats: number): string {
+  const bars = Math.floor(beats / 4);
+  const beat = beats % 4;
+  return `${bars}:${beat}:0`;
+}
+
 export class PlaybackEngine {
   private synth: Tone.PolySynth | null = null;
   private listeners = new Set<TickListener>();
@@ -23,10 +29,11 @@ export class PlaybackEngine {
 
   async init(): Promise<void> {
     if (this.initialized) return;
+    // Browser autoplay policy: AudioContext must be resumed from a user gesture.
     await Tone.start();
     this.synth = new Tone.PolySynth(Tone.Synth, {
       oscillator: { type: "triangle" },
-      envelope: { attack: 0.04, decay: 0.12, sustain: 0.55, release: 0.45 },
+      envelope: { attack: 0.004, decay: 0.1, sustain: 0.3, release: 0.2 },
     }).toDestination();
     this.synth.volume.value = -8;
     this.initialized = true;
@@ -47,16 +54,22 @@ export class PlaybackEngine {
     const transport = Tone.getTransport();
     let cumBeats = 0;
     for (const evt of events) {
-      const startTime = `${cumBeats}*4n`;
+      // BBS positions are bpm-relative: Tone rescales them live when transport.bpm changes,
+      // so dragging the tempo slider during playback shifts future chords automatically.
+      const startTime = beatsToBbs(cumBeats);
       transport.scheduleOnce((time) => {
-        const dur = `${evt.beats}*4n`;
+        // Read bpm at trigger time (not at schedule time) so tempo edits while playing
+        // affect subsequent chord durations.
+        const dur = (evt.beats * 60) / transport.bpm.value;
         this.synth?.triggerAttackRelease(evt.notes, dur, time);
+        // Tone.Draw routes the UI emit through requestAnimationFrame at the exact
+        // transport time the audio fires, so the highlight lands in sync with sound.
         Tone.getDraw().schedule(() => this.emit(evt), time);
       }, startTime);
       cumBeats += evt.beats;
     }
 
-    const endTime = `${cumBeats}*4n`;
+    const endTime = beatsToBbs(cumBeats);
     transport.scheduleOnce((time) => {
       Tone.getDraw().schedule(() => {
         this.emit(null);

@@ -41,6 +41,9 @@
   }
 }
 
+/* Off-screen default for print-only elements (e.g. the song-name <h2> that
+   appears above the chart on paper). The @media print block above flips them
+   back to display: block. Without this rule they'd render on screen too. */
 [data-print-only] {
   display: none;
 }

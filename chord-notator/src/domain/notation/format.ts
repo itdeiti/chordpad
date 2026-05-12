@@ -81,6 +81,10 @@ export function formatSong(song: Song): string {
     name: s.name,
     bars: packBars(s, song.key, roman),
   }));
+  // Unify pad widths across every section so columns stack vertically: the
+  // widest section name dictates the label column; the widest chord symbol
+  // anywhere in the song dictates every slot. Without this, each section
+  // would line up internally but not against the others.
   const nameWidth = Math.max(...rows.map((r) => r.name.length));
   const slotWidth = Math.max(
     1,

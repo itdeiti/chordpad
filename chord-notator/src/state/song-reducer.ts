@@ -118,6 +118,9 @@ export function songReducer(song: Song, action: SongAction): Song {
       return withStaging(song, { root: action.root });
 
     case "SET_QUALITY": {
+      // Auto-clean extensions that don't make sense under the new quality
+      // (e.g. m7 / maj7 are removed when switching to dim/aug) so the user
+      // doesn't have to manually un-toggle them.
       const base: Staging = song.staging ?? emptyStaging;
       let next: Staging = { ...base, quality: action.quality };
       next = pruneIncompatible(next);
@@ -170,6 +173,8 @@ export function songReducer(song: Song, action: SongAction): Song {
       };
 
     case "RESET_SONG": {
+      // Preserve id + name so the song stays in the library; this is a
+      // clear-content action, not a delete.
       const fresh = initialSong(song.name);
       return { ...fresh, id: song.id };
     }

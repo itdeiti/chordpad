@@ -45,6 +45,10 @@ export function chordToNotes(chord: Chord, baseOctave: number = 4): string[] {
       break;
   }
 
+  // sus chords *replace* the third with a 2nd or 4th; they're not additive.
+  // If both are somehow toggled, sus4 wins — sus4 is more common and
+  // unambiguous, and the alternative would produce a four-note cluster that
+  // wouldn't reflect any standard chord symbol.
   const hasSus2 = chord.extensions.includes("sus2");
   const hasSus4 = chord.extensions.includes("sus4");
   let thirdInterval: number | null = third;
@@ -81,6 +85,9 @@ export function chordToNotes(chord: Chord, baseOctave: number = 4): string[] {
   );
 
   if (chord.bass) {
+    // Slash-chord convention: the bass note is the lowest pitch. Drop it an
+    // octave below the chord so it sits beneath whatever inversion the upper
+    // structure produces.
     const bassSemi = SEMITONES_FROM_C[chord.bass];
     return [midiName(bassSemi, baseOctave - 1), ...upper];
   }

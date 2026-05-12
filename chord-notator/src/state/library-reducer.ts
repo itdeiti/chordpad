@@ -47,6 +47,8 @@ export function libraryReducer(lib: Library, action: LibraryAction): Library {
       };
 
     case "DELETE_SONG": {
+      // Library invariant: at least one song must exist so the UI always has
+      // something to render. Refuse to delete the last one.
       if (lib.songs.length <= 1) return lib;
       const remaining = lib.songs.filter((s) => s.id !== action.id);
       const nextActive =
@@ -55,6 +57,8 @@ export function libraryReducer(lib: Library, action: LibraryAction): Library {
     }
 
     case "IMPORT_SONG": {
+      // Assign a fresh id so a user who shares a URL back to themselves doesn't
+      // collide with the original entry; the import always becomes a new song.
       const imported: Song = { ...action.song, id: uuid(), staging: null };
       return {
         songs: [...lib.songs, imported],
@@ -63,6 +67,9 @@ export function libraryReducer(lib: Library, action: LibraryAction): Library {
     }
 
     default:
+      // Any unrecognized action is delegated to the song reducer and applied
+      // only to the active song. This keeps song-level actions oblivious to
+      // the library wrapper.
       return mapActive(lib, (s) => songReducer(s, action));
   }
 }

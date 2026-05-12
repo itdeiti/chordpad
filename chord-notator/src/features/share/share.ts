@@ -1,5 +1,8 @@
 import type { Song } from "domain/types";
 
+// We use the URL hash, not the query string: the fragment never reaches the
+// server (so no logging of the song payload) and static hosting like GitHub
+// Pages needs no special routing to handle it.
 const HASH_PREFIX = "#s=";
 
 function b64UrlEncode(s: string): string {
