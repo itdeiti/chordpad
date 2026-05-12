@@ -18,7 +18,15 @@ export type RootNote = (typeof ROOT_NOTES)[number];
 export const QUALITIES = ["major", "minor", "dim", "aug"] as const;
 export type Quality = (typeof QUALITIES)[number];
 
-export const EXTENSIONS = ["7", "maj7", "m7", "add9", "sus2", "sus4"] as const;
+export const EXTENSIONS = [
+  "7",
+  "maj7",
+  "m7",
+  "add9",
+  "sus2",
+  "sus4",
+  "add11",
+] as const;
 export type Extension = (typeof EXTENSIONS)[number];
 
 export const BEAT_OPTIONS = [1, 2, 3, 4] as const;

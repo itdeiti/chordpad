@@ -1,6 +1,7 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import SectionTabs from "components/molecules/section-tabs";
 import SongPicker from "components/molecules/song-picker";
+import SongToolbar from "components/molecules/song-toolbar";
 import ChordBuilder from "components/organisms/chord-builder";
 import SectionEditor from "components/organisms/section-editor";
 import ChordChart from "components/organisms/chord-chart";
@@ -67,6 +68,17 @@ function App() {
           onDelete={(id) => dispatch({ type: "DELETE_SECTION", id })}
         />
 
+        <SongToolbar
+          songKey={song.key}
+          displayMode={song.displayMode}
+          hasChords={hasContent}
+          onTranspose={(semitones) =>
+            dispatch({ type: "TRANSPOSE", semitones })
+          }
+          onSetKey={(key) => dispatch({ type: "SET_KEY", key })}
+          onSetMode={(mode) => dispatch({ type: "SET_DISPLAY_MODE", mode })}
+        />
+
         <SectionEditor
           section={activeSection}
           songKey={song.key}
@@ -82,7 +94,7 @@ function App() {
 
         <ChordBuilder staging={song.staging} dispatch={dispatch} />
 
-        <ChordChart song={song} dispatch={dispatch} />
+        <ChordChart song={song} />
       </div>
     </main>
   );

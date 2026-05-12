@@ -1,6 +1,20 @@
 @import "tailwindcss" source(".");
 @plugin "@tailwindcss/forms";
 
+@theme {
+  --color-accent: var(--color-purple-500);
+  --color-accent-soft: var(--color-purple-200);
+  --color-accent-ring: var(--color-purple-400);
+  --color-surface: var(--color-gray-900);
+  --color-surface-2: var(--color-gray-800);
+  --color-edge: var(--color-gray-700);
+  --color-edge-strong: var(--color-gray-600);
+  --color-muted: var(--color-gray-400);
+  --color-danger: var(--color-red-400);
+
+  --control-height: 2.25rem;
+}
+
 @layer base {
   html {
     -moz-osx-font-smoothing: grayscale;
