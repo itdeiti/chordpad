@@ -45,7 +45,7 @@
     "tone": "^15.1.22"
   },
   "devDependencies": {
-    "@commitlint/cli": "19.5.0",
+    "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "^21.0.1",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/forms": "^0.5.11",
