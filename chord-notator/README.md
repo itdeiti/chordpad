@@ -210,9 +210,33 @@ GitHub Pages auto-deploys every push to `main` via [.github/workflows/deploy.yml
 
 Deploy and release are intentionally **independent**: every push to `main` deploys (including the release-please merge commit), and releases are cut on top of whatever is already live. If you'd rather gate deploys on releases, swap the deploy workflow's trigger from `push: branches: [main]` to `release: types: [published]` and drop the `concurrency` group.
 
+## Continuous integration
+
+Every pull request to `main` runs [.github/workflows/ci.yml](../.github/workflows/ci.yml), which executes `npm ci`, `npm run lint`, and `npm run build` against the `chord-notator/` package. `npm run build` covers TypeScript strict-mode checking via `tsc -b` before invoking Vite, so a single workflow gates lint + types + bundling.
+
+Deploy ([.github/workflows/deploy.yml](../.github/workflows/deploy.yml)) and release-please run on push to `main` independently; CI only runs on PRs.
+
 ## Dependencies
 
 Dependabot is configured at [.github/dependabot.yml](../.github/dependabot.yml) at the repo root. Weekly checks for both npm (the `chord-notator/` package) and GitHub Actions; minor/patch npm updates are grouped into a single PR, majors get their own PR. All Dependabot PRs use the `chore(deps): ...` prefix to align with the commitlint rules above.
+
+### Auto-merging Dependabot PRs
+
+[.github/workflows/auto-merge-dependabot.yml](../.github/workflows/auto-merge-dependabot.yml) auto-approves and queues for auto-merge any Dependabot PR whose update type is **patch** or **minor**. Majors fall through and remain open for manual review — major bumps to React, Vite, or Tailwind in particular have shipped breakage in recent versions.
+
+Flow:
+
+1. Dependabot opens a PR (e.g. `chore(deps): bump react from 19.2.0 to 19.2.1`).
+2. CI starts running on the PR branch.
+3. The auto-merge workflow inspects the PR via [`dependabot/fetch-metadata`](https://github.com/dependabot/fetch-metadata). If patch or minor, it approves the PR and runs `gh pr merge --auto --squash`.
+4. GitHub holds the merge until every registered status check (i.e. CI) is green, then squash-merges automatically.
+
+Grouped updates: since the npm config groups minor/patch into a single PR, `fetch-metadata` reports the **highest** bump in the group. If any package in a grouped PR is a major, the whole group stays manual — conservative by design.
+
+**One-time repo settings** required for this to work (the same settings cover release-please's need to open PRs too):
+
+- **Settings → General → Allow auto-merge** ✓
+- **Settings → Actions → General → Workflow permissions** → "Allow GitHub Actions to create and approve pull requests" ✓
 
 ## Out of scope (deferred)
 
