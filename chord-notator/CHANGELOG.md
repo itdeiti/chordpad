@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/itdeiti/chordpad/compare/v2.0.0...v2.1.0) (2026-05-12)
+
+
+### Features
+
+* **playback:** better visual feedback for song playback. highlighting steps to all sections now ([50dbcf0](https://github.com/itdeiti/chordpad/commit/50dbcf0884a39072b83d69bd9204437d37050272))
+
 ## [2.0.0](https://github.com/itdeiti/chordpad/compare/v1.0.0...v2.0.0) (2026-05-12)
 
 
