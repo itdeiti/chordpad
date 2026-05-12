@@ -2,16 +2,16 @@
   "name": "chordpad",
   "type": "module",
   "version": "2.1.0",
-  "description": "Starter template for Vite with React (TypeScript). Supports Tailwind. Vitest and @react/testing-library configured and ready to go. Also ESLint, Prettier, Husky, Commit-lint and Atomic Design for components.",
-  "homepage": "https://github.com/jvidalv/vital#readme",
+  "description": "A fast button-driven chord chart editor.",
+  "homepage": "https://github.com/itdeiti/chordpad/blob/main/chord-notator/README.md",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jvidalv/vital.git"
+    "url": "git+https://github.com/itdeiti/chordpad.git"
   },
-  "author": "Josep Vidal <josepvidalvidal@gmail.com>",
+  "author": "itdeiti",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jvidalv/vital/issues"
+    "url": "https://github.com/itdeiti/chordpad/issues"
   },
   "keywords": [
     "react",
@@ -55,7 +55,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.5.0",
-    "eslint": "^9.39.1",
+    "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "lint-staged": "^17.0.4",

@@ -6,6 +6,14 @@ updates:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
+      eslint:
+        # Keep eslint + @eslint/js + plugins in lockstep so a v10 of @eslint/js
+        # never lands without the matching v10 of eslint itself.
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "eslint-plugin-*"
+          - "typescript-eslint"
       minor-and-patch:
         update-types:
           - minor
