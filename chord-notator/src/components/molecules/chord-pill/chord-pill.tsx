@@ -1,15 +1,17 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import IconButton from "components/atoms/icon-button";
 import { formatChord } from "app/format-chord";
-import type { Chord } from "app/types";
+import type { Chord, RootNote } from "app/types";
 
 interface Props {
   chord: Chord;
+  songKey?: RootNote;
+  roman?: boolean;
   onDelete: () => void;
 }
 
-function ChordPill({ chord, onDelete }: Props) {
-  const text = formatChord(chord);
+function ChordPill({ chord, songKey, roman = false, onDelete }: Props) {
+  const text = formatChord(chord, songKey, roman);
   return (
     <span className="inline-flex items-baseline gap-2 rounded-md bg-gray-800 border border-gray-700 px-3 py-1.5 font-mono text-base text-gray-100">
       <span>{text}</span>

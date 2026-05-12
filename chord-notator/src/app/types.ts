@@ -48,8 +48,19 @@ export interface Staging {
   beats: Beats;
 }
 
+export type DisplayMode = "letters" | "roman";
+
 export interface Song {
+  id: string;
+  name: string;
+  key: RootNote;
+  displayMode: DisplayMode;
   sections: Section[];
   activeSectionId: string;
   staging: Staging | null;
+}
+
+export interface Library {
+  songs: Song[];
+  activeSongId: string;
 }

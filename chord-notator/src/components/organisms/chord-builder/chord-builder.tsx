@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import RootGrid from "components/molecules/root-grid";
 import ModifierPanel from "components/molecules/modifier-panel";
 import StagingPreview from "components/molecules/staging-preview";
-import type { Action } from "app/song-reducer";
+import type { SongAction } from "app/song-reducer";
 import type { Staging } from "app/types";
 
 interface Props {
   staging: Staging | null;
-  dispatch: (a: Action) => void;
+  dispatch: (a: SongAction) => void;
 }
 
 const DEFAULT_STAGING: Staging = { quality: "major", extensions: [], beats: 4 };

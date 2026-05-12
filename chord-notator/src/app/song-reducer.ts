@@ -1,6 +1,8 @@
+import { transposeSong } from "app/transpose";
 import type {
   Beats,
   Chord,
+  DisplayMode,
   Extension,
   Quality,
   RootNote,
@@ -15,7 +17,7 @@ const emptyStaging: Staging = {
   beats: 4,
 };
 
-function uuid(): string {
+export function uuid(): string {
   return crypto.randomUUID();
 }
 
@@ -23,7 +25,7 @@ function makeSection(name: string): Section {
   return { id: uuid(), name, chords: [] };
 }
 
-export function initialSong(): Song {
+export function initialSong(name: string = "My Song"): Song {
   const sections: Section[] = [
     makeSection("Intro"),
     makeSection("Verse"),
@@ -34,13 +36,17 @@ export function initialSong(): Song {
     makeSection("Inst"),
   ];
   return {
+    id: uuid(),
+    name,
+    key: "C",
+    displayMode: "letters",
     sections,
     activeSectionId: sections[1].id,
     staging: null,
   };
 }
 
-export type Action =
+export type SongAction =
   | { type: "SELECT_SECTION"; id: string }
   | { type: "ADD_SECTION"; name: string }
   | { type: "RENAME_SECTION"; id: string; name: string }
@@ -53,7 +59,10 @@ export type Action =
   | { type: "CLEAR_STAGING" }
   | { type: "COMMIT_CHORD" }
   | { type: "DELETE_CHORD"; sectionId: string; chordId: string }
-  | { type: "RESET_SONG" };
+  | { type: "RESET_SONG" }
+  | { type: "TRANSPOSE"; semitones: number }
+  | { type: "SET_KEY"; key: RootNote }
+  | { type: "SET_DISPLAY_MODE"; mode: DisplayMode };
 
 function withStaging(song: Song, patch: Partial<Staging>): Song {
   const base: Staging = song.staging ?? emptyStaging;
@@ -70,7 +79,7 @@ function toggleExt(staging: Staging, ext: Extension): Staging {
   };
 }
 
-export function songReducer(song: Song, action: Action): Song {
+export function songReducer(song: Song, action: SongAction): Song {
   switch (action.type) {
     case "SELECT_SECTION":
       return { ...song, activeSectionId: action.id, staging: null };
@@ -160,8 +169,19 @@ export function songReducer(song: Song, action: Action): Song {
         ),
       };
 
-    case "RESET_SONG":
-      return initialSong();
+    case "RESET_SONG": {
+      const fresh = initialSong(song.name);
+      return { ...fresh, id: song.id };
+    }
+
+    case "TRANSPOSE":
+      return transposeSong(song, action.semitones);
+
+    case "SET_KEY":
+      return { ...song, key: action.key };
+
+    case "SET_DISPLAY_MODE":
+      return { ...song, displayMode: action.mode };
   }
 }
 
