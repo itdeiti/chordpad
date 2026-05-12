@@ -83,6 +83,9 @@ function App() {
               dispatch({ type: "RENAME_SECTION", id, name })
             }
             onDelete={(id) => dispatch({ type: "DELETE_SECTION", id })}
+            onReorder={(fromIndex, toIndex) =>
+              dispatch({ type: "REORDER_SECTION", fromIndex, toIndex })
+            }
           />
         </div>
 
@@ -120,6 +123,14 @@ function App() {
                 type: "DELETE_CHORD",
                 sectionId: activeSection.id,
                 chordId,
+              })
+            }
+            onReorderChord={(fromIndex, toIndex) =>
+              dispatch({
+                type: "REORDER_CHORD",
+                sectionId: activeSection.id,
+                fromIndex,
+                toIndex,
               })
             }
           />

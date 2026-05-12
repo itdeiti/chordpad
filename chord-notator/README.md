@@ -244,7 +244,6 @@ Grouped updates: since the npm config groups minor/patch into a single PR, `fetc
 - Configurable beats-per-bar (4/4 hardcoded).
 - Voicing options (open vs. closed), strum patterns, swing, metronome click.
 - Undo / redo.
-- Drag-reorder sections or chords.
 - Multi-song export (ChordPro, MIDI, MusicXML, PDF).
 - Mobile-specific gestures.
 - Accessibility audit beyond focus rings + ARIA labels.

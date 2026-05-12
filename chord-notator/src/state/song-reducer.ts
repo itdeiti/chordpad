@@ -1,3 +1,4 @@
+import { arrayMove } from "@dnd-kit/sortable";
 import { transposeSong } from "domain/theory/transpose";
 import type {
   Beats,
@@ -63,7 +64,14 @@ export type SongAction =
   | { type: "RESET_SONG" }
   | { type: "TRANSPOSE"; semitones: number }
   | { type: "SET_KEY"; key: RootNote }
-  | { type: "SET_DISPLAY_MODE"; mode: DisplayMode };
+  | { type: "SET_DISPLAY_MODE"; mode: DisplayMode }
+  | { type: "REORDER_SECTION"; fromIndex: number; toIndex: number }
+  | {
+      type: "REORDER_CHORD";
+      sectionId: string;
+      fromIndex: number;
+      toIndex: number;
+    };
 
 function withStaging(song: Song, patch: Partial<Staging>): Song {
   const base: Staging = song.staging ?? emptyStaging;
@@ -196,6 +204,25 @@ export function songReducer(song: Song, action: SongAction): Song {
 
     case "SET_DISPLAY_MODE":
       return { ...song, displayMode: action.mode };
+
+    case "REORDER_SECTION":
+      return {
+        ...song,
+        sections: arrayMove(song.sections, action.fromIndex, action.toIndex),
+      };
+
+    case "REORDER_CHORD":
+      return {
+        ...song,
+        sections: song.sections.map((s) =>
+          s.id === action.sectionId
+            ? {
+                ...s,
+                chords: arrayMove(s.chords, action.fromIndex, action.toIndex),
+              }
+            : s,
+        ),
+      };
   }
 }
 

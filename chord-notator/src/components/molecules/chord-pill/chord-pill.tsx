@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import IconButton from "components/atoms/icon-button";
 import { formatChord } from "domain/notation/format";
@@ -8,6 +9,9 @@ interface Props {
   songKey?: RootNote;
   roman?: boolean;
   playing?: boolean;
+  // Optional slot for a drag handle rendered to the left of the chord text.
+  // Kept as a render slot so this atom doesn't import dnd-kit.
+  dragHandle?: ReactNode;
   onDelete: () => void;
 }
 
@@ -16,6 +20,7 @@ function ChordPill({
   songKey,
   roman = false,
   playing = false,
+  dragHandle,
   onDelete,
 }: Props) {
   const text = formatChord(chord, songKey, roman);
@@ -28,6 +33,7 @@ function ChordPill({
           : "bg-gray-800 border-gray-700 text-gray-100")
       }
     >
+      {dragHandle}
       <span>{text}</span>
       {chord.beats !== 4 && (
         <span className="text-xs text-gray-500">·{chord.beats}</span>
