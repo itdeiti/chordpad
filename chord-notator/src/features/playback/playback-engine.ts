@@ -43,12 +43,12 @@ export class PlaybackEngine {
     Tone.getTransport().bpm.value = bpm;
   }
 
-  async play(song: Song, bpm: number): Promise<void> {
+  async play(song: Song, bpm: number, sectionId?: string): Promise<void> {
     await this.init();
     this.stopInternal();
     this.setTempo(bpm);
 
-    const events = this.songToEvents(song);
+    const events = this.songToEvents(song, sectionId);
     if (events.length === 0) return;
 
     const transport = Tone.getTransport();
@@ -110,9 +110,12 @@ export class PlaybackEngine {
     for (const l of this.listeners) l(tick);
   }
 
-  private songToEvents(song: Song): ScheduledEvent[] {
+  private songToEvents(song: Song, sectionId?: string): ScheduledEvent[] {
+    const sections = sectionId
+      ? song.sections.filter((s) => s.id === sectionId)
+      : song.sections;
     const events: ScheduledEvent[] = [];
-    for (const section of song.sections) {
+    for (const section of sections) {
       for (const chord of section.chords) {
         events.push({
           sectionId: section.id,

@@ -15,6 +15,7 @@ function App() {
     song.sections.find((s) => s.id === song.activeSectionId) ??
     song.sections[0];
   const hasContent = song.sections.some((s) => s.chords.length > 0);
+  const hasSectionContent = activeSection.chords.length > 0;
 
   const onReset = () => {
     if (
@@ -86,8 +87,10 @@ function App() {
           <PlaybackControls
             playing={playback.playing}
             tempo={playback.tempo}
-            hasChords={hasContent}
-            onPlay={playback.play}
+            hasSongChords={hasContent}
+            hasSectionChords={hasSectionContent}
+            onPlaySection={() => playback.play(activeSection.id)}
+            onPlaySong={() => playback.play()}
             onStop={playback.stop}
             onSetTempo={playback.setTempo}
           />

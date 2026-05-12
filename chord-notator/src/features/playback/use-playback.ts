@@ -24,10 +24,10 @@ export function usePlayback(song: Song) {
     };
   }, []);
 
-  const play = () => {
+  const play = (sectionId?: string) => {
     if (!engineRef.current) return;
     setPlaying(true);
-    engineRef.current.play(song, tempo).catch(() => {
+    engineRef.current.play(song, tempo, sectionId).catch(() => {
       setPlaying(false);
     });
   };
