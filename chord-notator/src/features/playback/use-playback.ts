@@ -8,6 +8,7 @@ export function usePlayback(song: Song) {
   const engineRef = useRef<PlaybackEngine | null>(null);
   const [playing, setPlaying] = useState(false);
   const [currentChordId, setCurrentChordId] = useState<string | null>(null);
+  const [currentSectionId, setCurrentSectionId] = useState<string | null>(null);
   const [tempo, setTempoState] = useState(DEFAULT_TEMPO);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export function usePlayback(song: Song) {
     engineRef.current = engine;
     const unsub = engine.onTick((tick) => {
       setCurrentChordId(tick?.chordId ?? null);
+      setCurrentSectionId(tick?.sectionId ?? null);
       if (!tick) setPlaying(false);
     });
     return () => {
@@ -42,5 +44,13 @@ export function usePlayback(song: Song) {
     engineRef.current?.setTempo(bpm);
   };
 
-  return { playing, currentChordId, tempo, play, stop, setTempo };
+  return {
+    playing,
+    currentChordId,
+    currentSectionId,
+    tempo,
+    play,
+    stop,
+    setTempo,
+  };
 }

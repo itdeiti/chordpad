@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import SectionTabs from "components/molecules/section-tabs";
 import SongPicker from "components/molecules/song-picker";
@@ -11,6 +12,18 @@ import { useLibrary } from "state/use-library";
 function App() {
   const { library, song, dispatch } = useLibrary();
   const playback = usePlayback(song);
+
+  // Playback follow: when the transport enters a new section, focus that
+  // section so the chord-pill highlight stays visible. FOCUS_SECTION (vs
+  // SELECT_SECTION) is used so an in-progress staging chord isn't wiped.
+  useEffect(() => {
+    if (
+      playback.currentSectionId &&
+      playback.currentSectionId !== song.activeSectionId
+    ) {
+      dispatch({ type: "FOCUS_SECTION", id: playback.currentSectionId });
+    }
+  }, [playback.currentSectionId, song.activeSectionId, dispatch]);
   const activeSection =
     song.sections.find((s) => s.id === song.activeSectionId) ??
     song.sections[0];

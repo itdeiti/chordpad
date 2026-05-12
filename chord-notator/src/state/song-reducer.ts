@@ -48,6 +48,7 @@ export function initialSong(name: string = "My Song"): Song {
 
 export type SongAction =
   | { type: "SELECT_SECTION"; id: string }
+  | { type: "FOCUS_SECTION"; id: string }
   | { type: "ADD_SECTION"; name: string }
   | { type: "RENAME_SECTION"; id: string; name: string }
   | { type: "DELETE_SECTION"; id: string }
@@ -83,6 +84,14 @@ export function songReducer(song: Song, action: SongAction): Song {
   switch (action.type) {
     case "SELECT_SECTION":
       return { ...song, activeSectionId: action.id, staging: null };
+
+    case "FOCUS_SECTION":
+      // Like SELECT_SECTION but preserves staging — used by playback follow,
+      // where the user didn't initiate the switch and shouldn't lose their
+      // in-progress chord.
+      return song.activeSectionId === action.id
+        ? song
+        : { ...song, activeSectionId: action.id };
 
     case "ADD_SECTION": {
       const section = makeSection(action.name.trim() || "Section");
