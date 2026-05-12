@@ -4,9 +4,10 @@ import {
   DocumentDuplicateIcon,
   LinkIcon,
 } from "@heroicons/react/24/outline";
-import { formatSong } from "app/format-chord";
-import { encodeSongToUrl } from "app/share";
-import type { Song } from "app/types";
+import { formatSong } from "domain/notation/format";
+import { PrintButton } from "features/print";
+import { encodeSongToUrl } from "features/share";
+import type { Song } from "domain/types";
 
 interface Props {
   song: Song;
@@ -37,8 +38,14 @@ function ChordChart({ song }: Props) {
   const ShareIcon = shared ? CheckCircleIcon : LinkIcon;
 
   return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+    <div
+      data-print-area
+      className="rounded-lg border border-gray-800 bg-gray-900/40 p-4"
+    >
+      <div
+        data-print-hide
+        className="flex flex-wrap items-center justify-between gap-2 mb-3"
+      >
         <div className="text-xs uppercase tracking-wide text-gray-400">
           Chart
         </div>
@@ -60,6 +67,7 @@ function ChordChart({ song }: Props) {
             <CopyIcon className="w-4 h-4" />
             {copied ? "Copied" : "Copy"}
           </button>
+          <PrintButton disabled={!text} />
         </div>
       </div>
       {text ? (

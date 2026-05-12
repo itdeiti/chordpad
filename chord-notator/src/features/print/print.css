@@ -1,0 +1,46 @@
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 2cm;
+  }
+
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  main {
+    background: white !important;
+    background-image: none !important;
+    animation: none !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+
+  header,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  [data-print-area] {
+    background: white !important;
+    border: none !important;
+    padding: 0 !important;
+    color: black !important;
+  }
+
+  [data-print-area] pre,
+  [data-print-area] * {
+    color: black !important;
+    background: transparent !important;
+  }
+
+  [data-print-only] {
+    display: block !important;
+  }
+}
+
+[data-print-only] {
+  display: none;
+}
