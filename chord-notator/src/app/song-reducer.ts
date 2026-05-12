@@ -52,7 +52,8 @@ export type Action =
   | { type: "SET_BEATS"; beats: Beats }
   | { type: "CLEAR_STAGING" }
   | { type: "COMMIT_CHORD" }
-  | { type: "DELETE_CHORD"; sectionId: string; chordId: string };
+  | { type: "DELETE_CHORD"; sectionId: string; chordId: string }
+  | { type: "RESET_SONG" };
 
 function withStaging(song: Song, patch: Partial<Staging>): Song {
   const base: Staging = song.staging ?? emptyStaging;
@@ -158,6 +159,9 @@ export function songReducer(song: Song, action: Action): Song {
             : s,
         ),
       };
+
+    case "RESET_SONG":
+      return initialSong();
   }
 }
 
