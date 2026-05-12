@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/itdeiti/chordpad/compare/v2.1.0...v2.1.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* fix vulnerabilities ([9c8feec](https://github.com/itdeiti/chordpad/commit/9c8feec8bedaad12ae3f41ce0167cec39531348f))
+* resolve dependancy issues bump eslint to 10 and make eslint and eslint js a group for dependabot ([f3dc0a2](https://github.com/itdeiti/chordpad/commit/f3dc0a267b17234bffdbc93f89cc38af9d41e77d))
+
 ## [2.1.0](https://github.com/itdeiti/chordpad/compare/v2.0.0...v2.1.0) (2026-05-12)
 
 
