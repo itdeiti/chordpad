@@ -248,3 +248,7 @@ Grouped updates: since the npm config groups minor/patch into a single PR, `fetc
 - Multi-song export (ChordPro, MIDI, MusicXML, PDF).
 - Mobile-specific gestures.
 - Accessibility audit beyond focus rings + ARIA labels.
+
+## Credits
+
+Thanks to Josep Vidal for the Vite Starter template: <https://github.com/jvidalv/vital#readme>
