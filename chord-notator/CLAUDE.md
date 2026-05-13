@@ -192,7 +192,7 @@ const Button = forwardRef<
 
 Button.displayName = "Button";
 
-export default Button;
+export { Button };
 ```
 
 ### Component Pattern (with custom props)
@@ -219,7 +219,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
 
 Card.displayName = "Card";
 
-export default Card;
+export { Card };
 ```
 
 ### Import Order
