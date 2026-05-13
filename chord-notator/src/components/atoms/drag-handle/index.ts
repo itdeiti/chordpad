@@ -1,1 +1,1 @@
-export { default } from "./drag-handle";
+export * from "./drag-handle";

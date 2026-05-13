@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { type FC, useRef, useState } from "react";
 import {
   ChevronDownIcon,
   PencilSquareIcon,
@@ -7,7 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import type { Library } from "domain/types";
 
-interface Props {
+type Props = {
   library: Library;
   onSelect: (id: string) => void;
   onCreate: (name?: string) => void;
@@ -15,7 +15,7 @@ interface Props {
   onDelete: (id: string) => void;
 }
 
-function SongPicker({ library, onSelect, onCreate, onRename, onDelete }: Props) {
+export const SongPicker: FC<Props> = ({ library, onSelect, onCreate, onRename, onDelete }) => {
   const [open, setOpen] = useState(false);
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const active = library.songs.find((s) => s.id === library.activeSongId);
@@ -117,4 +117,3 @@ function SongPicker({ library, onSelect, onCreate, onRename, onDelete }: Props) 
   );
 }
 
-export default SongPicker;

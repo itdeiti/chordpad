@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+import { type FC, ReactNode } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import IconButton from "components/atoms/icon-button";
+import { IconButton } from "components/atoms/icon-button";
 import { formatChord } from "domain/notation/format";
 import type { Chord, RootNote } from "domain/types";
 
-interface Props {
+type Props = {
   chord: Chord;
   songKey?: RootNote;
   roman?: boolean;
@@ -15,14 +15,14 @@ interface Props {
   onDelete: () => void;
 }
 
-function ChordPill({
+export const ChordPill: FC<Props> = ({
   chord,
   songKey,
   roman = false,
   playing = false,
   dragHandle,
   onDelete,
-}: Props) {
+}) => {
   const text = formatChord(chord, songKey, roman);
   return (
     <span
@@ -47,4 +47,3 @@ function ChordPill({
   );
 }
 
-export default ChordPill;

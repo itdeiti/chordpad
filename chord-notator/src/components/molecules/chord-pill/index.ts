@@ -1,3 +1,1 @@
-import ChordPill from "./chord-pill";
-
-export default ChordPill;
+export * from "./chord-pill";

@@ -1,4 +1,4 @@
-import { useState, KeyboardEvent } from "react";
+import { type FC, useState, KeyboardEvent } from "react";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   DndContext,
@@ -11,12 +11,12 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import DragHandle from "components/atoms/drag-handle";
+import { DragHandle } from "components/atoms/drag-handle";
 import { useDragSensors } from "components/hooks/use-drag-sensors";
-import IconButton from "components/atoms/icon-button";
+import { IconButton } from "components/atoms/icon-button";
 import type { Section } from "domain/types";
 
-interface Props {
+type Props = {
   sections: Section[];
   activeId: string;
   onSelect: (id: string) => void;
@@ -26,7 +26,7 @@ interface Props {
   onReorder: (fromIndex: number, toIndex: number) => void;
 }
 
-interface TabProps {
+type TabProps = {
   section: Section;
   active: boolean;
   canDelete: boolean;
@@ -40,7 +40,7 @@ interface TabProps {
   onCancelRename: () => void;
 }
 
-function SortableTab({
+const SortableTab: FC<TabProps> = ({
   section,
   active,
   canDelete,
@@ -52,7 +52,7 @@ function SortableTab({
   onDraftChange,
   onCommitRename,
   onCancelRename,
-}: TabProps) {
+}) => {
   const {
     attributes,
     listeners,
@@ -118,7 +118,7 @@ function SortableTab({
   );
 }
 
-function SectionTabs({
+export const SectionTabs: FC<Props> = ({
   sections,
   activeId,
   onSelect,
@@ -126,7 +126,7 @@ function SectionTabs({
   onRename,
   onDelete,
   onReorder,
-}: Props) {
+}) => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
 
@@ -196,4 +196,3 @@ function SectionTabs({
   );
 }
 
-export default SectionTabs;

@@ -1,6 +1,7 @@
+import { type FC } from "react";
 import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
 
-interface Props {
+type Props = {
   playing: boolean;
   tempo: number;
   hasSongChords: boolean;
@@ -11,7 +12,7 @@ interface Props {
   onSetTempo: (bpm: number) => void;
 }
 
-function PlaybackControls({
+export const PlaybackControls: FC<Props> = ({
   playing,
   tempo,
   hasSongChords,
@@ -20,7 +21,7 @@ function PlaybackControls({
   onPlaySong,
   onStop,
   onSetTempo,
-}: Props) {
+}) => {
   return (
     <div className="space-y-1">
       <div className="text-xs uppercase tracking-wide text-muted">Playback</div>
@@ -79,4 +80,3 @@ function PlaybackControls({
   );
 }
 
-export default PlaybackControls;

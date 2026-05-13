@@ -1,5 +1,5 @@
-import { useState } from "react";
-import ChordButton from "components/atoms/chord-button";
+import { type FC, useState } from "react";
+import { ChordButton } from "components/atoms/chord-button";
 import {
   ROOT_NOTES,
   type Extension,
@@ -9,7 +9,7 @@ import {
 import { isExtensionAllowed } from "state/song-reducer";
 import { QualityPanel } from "./quality-panel";
 
-interface Props {
+type Props = {
   quality: Quality;
   extensions: Extension[];
   bass?: RootNote;
@@ -24,7 +24,7 @@ interface Props {
 // change. EXTENSIONS in domain/types.ts stays the source of truth for the
 // data model; this just decides how each one is presented.
 type GroupKind = "radio" | "toggle";
-interface ExtensionGroup {
+type ExtensionGroup = {
   label: string;
   kind: GroupKind;
   members: Extension[];
@@ -42,14 +42,14 @@ const GROUPS: ExtensionGroup[] = [
   { label: "Alter", kind: "toggle", members: ["b5", "#5", "b9", "#9", "alt"] },
 ];
 
-function ModifierPanel({
+export const ModifierPanel: FC<Props> = ({
   quality,
   extensions,
   bass,
   onSetQuality,
   onToggleExtension,
   onSetBass,
-}: Props) {
+}) => {
   const [bassOpen, setBassOpen] = useState(false);
 
   // Radio behavior over the flat extensions[] array: if a sibling in the same
@@ -127,4 +127,3 @@ function ModifierPanel({
     </div>
   );
 }
-export default ModifierPanel;

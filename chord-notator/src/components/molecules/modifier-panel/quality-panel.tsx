@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { QUALITIES, type Quality } from "domain/types";
-import ChordButton from "components/atoms/chord-button";
+import { ChordButton } from "components/atoms/chord-button";
 import { QUALITY_LABEL } from "./consts";
 
 type QualityProps = {

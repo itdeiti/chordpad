@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { ChordDb } from "domain/theory/fingerings";
 
-interface DbState {
+type DbState = {
   db: ChordDb | null;
   loading: boolean;
   error: Error | null;

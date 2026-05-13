@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { type FC, useMemo } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 import type { RootNote, Section } from "domain/types";
-import CircleDisplay from "./circle-display";
+import { CircleDisplay } from "./circle-display";
 import { useCircleToggle } from "./use-circle-toggle";
 
-interface Props {
+type Props = {
   section: Section;
 }
 
@@ -16,7 +16,7 @@ interface Props {
 //   between the feature and the surrounding app.
 // - Marks itself data-print-hide so the printed sheet remains the chord chart
 //   alone — print visibility is owned by the feature, not the integration site.
-function CircleOfFifths({ section }: Props) {
+export const CircleOfFifths: FC<Props> = ({ section }) => {
   const [shown, setShown] = useCircleToggle();
 
   // Quality-aware split: outer-ring highlights for "major-flavored" chords
@@ -61,4 +61,3 @@ function CircleOfFifths({ section }: Props) {
   );
 }
 
-export default CircleOfFifths;

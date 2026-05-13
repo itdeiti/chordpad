@@ -1,14 +1,15 @@
+import { type FC } from "react";
 import {
   CIRCLE_OF_FIFTHS,
   relativeMinor,
 } from "domain/theory/circle-of-fifths";
 import type { RootNote } from "domain/types";
 
-interface Props {
+type Props = {
   majorRoots: Set<RootNote>;
   minorRoots: Set<RootNote>;
   size?: number;
-}
+};
 
 // Geometry — kept in named constants so the radial math reads top-to-bottom.
 const VIEWBOX = 240;
@@ -29,24 +30,22 @@ const HALF_SLOT_DEG = SLOT_DEG / 2;
 // Subtract 90° to put slot 0 (C) at the top instead of due east.
 const TWELVE_OCLOCK_DEG = -90;
 
-function deg2rad(d: number): number {
-  return (d * Math.PI) / 180;
-}
+const deg2rad = (d: number): number => (d * Math.PI) / 180;
 
-function pointOnCircle(angleDeg: number, radius: number) {
+const pointOnCircle = (angleDeg: number, radius: number) => {
   const a = deg2rad(angleDeg);
   return { x: CENTER + radius * Math.cos(a), y: CENTER + radius * Math.sin(a) };
-}
+};
 
 // Build an SVG path for an annular sector (a pie wedge with a hole punched out
 // of the middle). Used twice per slot — once for the outer ring (majors), once
 // for the inner ring (minors).
-function annularWedge(
+const annularWedge = (
   startDeg: number,
   endDeg: number,
   rInner: number,
   rOuter: number,
-): string {
+): string => {
   const outerStart = pointOnCircle(startDeg, rOuter);
   const outerEnd = pointOnCircle(endDeg, rOuter);
   const innerStart = pointOnCircle(startDeg, rInner);
@@ -61,9 +60,9 @@ function annularWedge(
     `A ${rInner} ${rInner} 0 0 0 ${innerStart.x} ${innerStart.y}`,
     "Z",
   ].join(" ");
-}
+};
 
-function CircleDisplay({ majorRoots, minorRoots, size = 240 }: Props) {
+export const CircleDisplay: FC<Props> = ({ majorRoots, minorRoots, size = 240 }) => {
   return (
     <svg
       viewBox={`0 0 ${VIEWBOX} ${VIEWBOX}`}
@@ -136,6 +135,4 @@ function CircleDisplay({ majorRoots, minorRoots, size = 240 }: Props) {
       })}
     </svg>
   );
-}
-
-export default CircleDisplay;
+};

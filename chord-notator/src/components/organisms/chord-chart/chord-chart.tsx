@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type FC, useMemo, useState } from "react";
 import {
   CheckCircleIcon,
   DocumentDuplicateIcon,
@@ -11,12 +11,12 @@ import { PrintButton } from "features/print";
 import { encodeSongToUrl } from "features/share";
 import type { Song } from "domain/types";
 
-interface Props {
+type Props = {
   song: Song;
   onToggleDiagrams: () => void;
 }
 
-function ChordChart({ song, onToggleDiagrams }: Props) {
+export const ChordChart: FC<Props> = ({ song, onToggleDiagrams }) => {
   const text = useMemo(() => formatSong(song), [song]);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
@@ -102,4 +102,3 @@ function ChordChart({ song, onToggleDiagrams }: Props) {
   );
 }
 
-export default ChordChart;

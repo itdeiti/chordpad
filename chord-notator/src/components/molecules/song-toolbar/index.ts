@@ -1,1 +1,1 @@
-export { default } from "./song-toolbar";
+export * from "./song-toolbar";

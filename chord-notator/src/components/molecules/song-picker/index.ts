@@ -1,1 +1,1 @@
-export { default } from "./song-picker";
+export * from "./song-picker";

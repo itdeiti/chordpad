@@ -1,3 +1,4 @@
+import { type FC } from "react";
 import {
   DndContext,
   closestCenter,
@@ -9,12 +10,12 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import DragHandle from "components/atoms/drag-handle";
+import { DragHandle } from "components/atoms/drag-handle";
 import { useDragSensors } from "components/hooks/use-drag-sensors";
-import ChordPill from "components/molecules/chord-pill";
+import { ChordPill } from "components/molecules/chord-pill";
 import type { Chord, RootNote, Section } from "domain/types";
 
-interface Props {
+type Props = {
   section: Section;
   songKey: RootNote;
   roman: boolean;
@@ -23,7 +24,7 @@ interface Props {
   onReorderChord: (fromIndex: number, toIndex: number) => void;
 }
 
-interface SortablePillProps {
+type SortablePillProps = {
   chord: Chord;
   songKey: RootNote;
   roman: boolean;
@@ -31,13 +32,13 @@ interface SortablePillProps {
   onDelete: () => void;
 }
 
-function SortablePill({
+const SortablePill: FC<SortablePillProps> = ({
   chord,
   songKey,
   roman,
   playing,
   onDelete,
-}: SortablePillProps) {
+}) => {
   const {
     attributes,
     listeners,
@@ -73,14 +74,14 @@ function SortablePill({
   );
 }
 
-function SectionEditor({
+export const SectionEditor: FC<Props> = ({
   section,
   songKey,
   roman,
   currentChordId,
   onDeleteChord,
   onReorderChord,
-}: Props) {
+}) => {
   const sensors = useDragSensors();
 
   const handleDragEnd = (e: DragEndEvent) => {
@@ -129,4 +130,3 @@ function SectionEditor({
   );
 }
 
-export default SectionEditor;

@@ -1,3 +1,1 @@
-import StagingPreview from "./staging-preview";
-
-export default StagingPreview;
+export * from "./staging-preview";

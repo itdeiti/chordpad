@@ -5,12 +5,12 @@ import type { Library, Song } from "domain/types";
 const STORAGE_KEY = "chordpad:song";
 const STORAGE_VERSION = 2;
 
-interface PersistedV1 {
+type PersistedV1 = {
   version: 1;
   song: Omit<Song, "id" | "name"> & { id?: string; name?: string };
 }
 
-interface PersistedV2 {
+type PersistedV2 = {
   version: 2;
   library: Library;
 }

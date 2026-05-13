@@ -1,3 +1,1 @@
-import ChordChart from "./chord-chart";
-
-export default ChordChart;
+export * from "./chord-chart";

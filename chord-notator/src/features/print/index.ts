@@ -1,2 +1,2 @@
 import "./print.css";
-export { default as PrintButton } from "./print-button";
+export { PrintButton } from "./print-button";

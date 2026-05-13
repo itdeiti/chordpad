@@ -1,3 +1,1 @@
-import ChordBuilder from "./chord-builder";
-
-export default ChordBuilder;
+export * from "./chord-builder";

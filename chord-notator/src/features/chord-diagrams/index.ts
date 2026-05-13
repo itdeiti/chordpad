@@ -1,1 +1,1 @@
-export { default as ChordLegend } from "./chord-legend";
+export { ChordLegend } from "./chord-legend";

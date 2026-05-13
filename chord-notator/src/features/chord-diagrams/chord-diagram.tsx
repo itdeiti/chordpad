@@ -1,9 +1,10 @@
+import { type FC } from "react";
 import type { Fingering } from "domain/theory/fingerings";
 
-interface Props {
+type Props = {
   label: string;
   fingering: Fingering | null;
-}
+};
 
 // SVG coordinates — keep small numbers so the box is dense and scales sharply.
 // 6 strings × 5 frets fits comfortably in 60×72.
@@ -17,29 +18,7 @@ const FRETS = 5;
 const STRING_GAP = (W - 2 * PAD_X) / (STRINGS - 1);
 const FRET_GAP = (H - PAD_TOP - PAD_BOTTOM) / FRETS;
 
-function ChordDiagram({ label, fingering }: Props) {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div className="font-mono text-xs text-accent-soft tabular-nums">
-        {label}
-      </div>
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        width={W}
-        height={H}
-        className="text-muted"
-        role="img"
-        aria-label={
-          fingering ? `${label} chord diagram` : `${label}: no diagram available`
-        }
-      >
-        {fingering ? renderFingering(fingering) : renderPlaceholder()}
-      </svg>
-    </div>
-  );
-}
-
-function renderFingering(f: Fingering) {
+const renderFingering = (f: Fingering) => {
   const showBaseFret = f.baseFret > 1;
 
   return (
@@ -172,22 +151,40 @@ function renderFingering(f: Fingering) {
       })}
     </>
   );
-}
+};
 
-function renderPlaceholder() {
+const renderPlaceholder = () => (
+  <text
+    x={W / 2}
+    y={H / 2}
+    fontSize={14}
+    fill="currentColor"
+    textAnchor="middle"
+    dominantBaseline="middle"
+    opacity={0.5}
+  >
+    ?
+  </text>
+);
+
+export const ChordDiagram: FC<Props> = ({ label, fingering }) => {
   return (
-    <text
-      x={W / 2}
-      y={H / 2}
-      fontSize={14}
-      fill="currentColor"
-      textAnchor="middle"
-      dominantBaseline="middle"
-      opacity={0.5}
-    >
-      ?
-    </text>
+    <div className="flex flex-col items-center gap-1">
+      <div className="font-mono text-xs text-accent-soft tabular-nums">
+        {label}
+      </div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        width={W}
+        height={H}
+        className="text-muted"
+        role="img"
+        aria-label={
+          fingering ? `${label} chord diagram` : `${label}: no diagram available`
+        }
+      >
+        {fingering ? renderFingering(fingering) : renderPlaceholder()}
+      </svg>
+    </div>
   );
-}
-
-export default ChordDiagram;
+};

@@ -1,3 +1,1 @@
-import SectionEditor from "./section-editor";
-
-export default SectionEditor;
+export * from "./section-editor";

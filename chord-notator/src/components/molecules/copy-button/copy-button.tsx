@@ -4,12 +4,11 @@ import {
   DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
 
-interface Props
-  extends Omit<ComponentProps<"div">, "className" | "onClick" | "title"> {
+type Props = Omit<ComponentProps<"div">, "className" | "onClick" | "title"> & {
   text: string;
 }
 
-const CopyButton = forwardRef<HTMLDivElement, Props>(
+export const CopyButton = forwardRef<HTMLDivElement, Props>(
   ({ text, ...rest }, ref) => {
     const [copied, setCopied] = useState(false);
     const onClick = () => {
@@ -46,4 +45,3 @@ const CopyButton = forwardRef<HTMLDivElement, Props>(
   }
 );
 
-export default CopyButton;

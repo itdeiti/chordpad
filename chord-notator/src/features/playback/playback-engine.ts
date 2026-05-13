@@ -2,14 +2,14 @@ import * as Tone from "tone";
 import { chordToNotes } from "domain/theory/voicing";
 import type { Song } from "domain/types";
 
-export interface PlaybackTick {
+export type PlaybackTick = {
   sectionId: string;
   chordId: string;
 }
 
 type TickListener = (tick: PlaybackTick | null) => void;
 
-interface ScheduledEvent {
+type ScheduledEvent = {
   sectionId: string;
   chordId: string;
   notes: string[];

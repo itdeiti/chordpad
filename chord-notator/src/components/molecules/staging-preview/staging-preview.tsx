@@ -1,7 +1,8 @@
+import { type FC } from "react";
 import { formatChord } from "domain/notation/format";
 import { BEAT_OPTIONS, type Beats, type Staging } from "domain/types";
 
-interface Props {
+type Props = {
   staging: Staging | null;
   beats: Beats;
   onSetBeats: (beats: Beats) => void;
@@ -9,13 +10,13 @@ interface Props {
   onClear: () => void;
 }
 
-function StagingPreview({
+export const StagingPreview: FC<Props> = ({
   staging,
   beats,
   onSetBeats,
   onAdd,
   onClear,
-}: Props) {
+}) => {
   const text = staging?.root ? formatChord(staging) : "—";
   const canCommit = !!staging?.root;
 
@@ -76,4 +77,3 @@ function StagingPreview({
   );
 }
 
-export default StagingPreview;

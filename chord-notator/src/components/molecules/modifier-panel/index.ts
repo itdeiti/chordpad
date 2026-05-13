@@ -1,3 +1,1 @@
-import ModifierPanel from "./modifier-panel";
-
-export default ModifierPanel;
+export * from "./modifier-panel";

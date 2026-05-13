@@ -1,1 +1,1 @@
-export { default as CircleOfFifths } from "./circle-of-fifths";
+export { CircleOfFifths } from "./circle-of-fifths";

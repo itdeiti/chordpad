@@ -1,7 +1,8 @@
+import { type FC } from "react";
 import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { ROOT_NOTES, type DisplayMode, type RootNote } from "domain/types";
 
-interface Props {
+type Props = {
   songKey: RootNote;
   displayMode: DisplayMode;
   hasChords: boolean;
@@ -18,14 +19,14 @@ const stepBtnClass =
 const toggleBtnBase =
   "px-3 flex items-center text-sm font-mono focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent-ring";
 
-function SongToolbar({
+export const SongToolbar: FC<Props> = ({
   songKey,
   displayMode,
   hasChords,
   onTranspose,
   onSetKey,
   onSetMode,
-}: Props) {
+}) => {
   return (
     <>
       <div className="space-y-1">
@@ -102,4 +103,3 @@ function SongToolbar({
   );
 }
 
-export default SongToolbar;

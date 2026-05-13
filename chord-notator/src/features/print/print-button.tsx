@@ -1,10 +1,11 @@
+import { type FC } from "react";
 import { PrinterIcon } from "@heroicons/react/24/outline";
 
-interface Props {
+type Props = {
   disabled?: boolean;
 }
 
-function PrintButton({ disabled = false }: Props) {
+export const PrintButton: FC<Props> = ({ disabled = false }) => {
   return (
     <button
       type="button"
@@ -18,4 +19,3 @@ function PrintButton({ disabled = false }: Props) {
   );
 }
 
-export default PrintButton;

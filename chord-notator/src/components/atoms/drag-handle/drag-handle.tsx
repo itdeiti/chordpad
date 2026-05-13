@@ -1,3 +1,4 @@
+import { type FC } from "react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import type { useSortable } from "@dnd-kit/sortable";
 import { cn } from "components/lib/cn";
@@ -6,14 +7,14 @@ import { cn } from "components/lib/cn";
 // in sync with whatever dnd-kit currently emits.
 type SortableReturn = ReturnType<typeof useSortable>;
 
-interface Props {
+type Props = {
   label: string;
   attributes: SortableReturn["attributes"];
   listeners: SortableReturn["listeners"];
   className?: string;
 }
 
-function DragHandle({ label, attributes, listeners, className }: Props) {
+export const DragHandle: FC<Props> = ({ label, attributes, listeners, className }) => {
   return (
     <button
       type="button"
@@ -34,4 +35,3 @@ function DragHandle({ label, attributes, listeners, className }: Props) {
   );
 }
 
-export default DragHandle;

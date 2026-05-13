@@ -1,12 +1,13 @@
-import ChordButton from "components/atoms/chord-button";
+import { type FC } from "react";
+import { ChordButton } from "components/atoms/chord-button";
 import { ROOT_NOTES, type RootNote } from "domain/types";
 
-interface Props {
+type Props = {
   value?: RootNote;
   onSelect: (note: RootNote) => void;
 }
 
-function RootGrid({ value, onSelect }: Props) {
+export const RootGrid: FC<Props> = ({ value, onSelect }) => {
   return (
     <div className="grid grid-cols-4 gap-2">
       {ROOT_NOTES.map((note) => (
@@ -22,4 +23,3 @@ function RootGrid({ value, onSelect }: Props) {
   );
 }
 
-export default RootGrid;

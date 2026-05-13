@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import SectionTabs from "components/molecules/section-tabs";
-import SongPicker from "components/molecules/song-picker";
-import SongToolbar from "components/molecules/song-toolbar";
-import ChordBuilder from "components/organisms/chord-builder";
-import SectionEditor from "components/organisms/section-editor";
-import ChordChart from "components/organisms/chord-chart";
+import { SectionTabs } from "components/molecules/section-tabs";
+import { SongPicker } from "components/molecules/song-picker";
+import { SongToolbar } from "components/molecules/song-toolbar";
+import { ChordBuilder } from "components/organisms/chord-builder";
+import { SectionEditor } from "components/organisms/section-editor";
+import { ChordChart } from "components/organisms/chord-chart";
 import { CircleOfFifths } from "features/circle-of-fifths";
 import { PlaybackControls, usePlayback } from "features/playback";
 import { useLibrary } from "state/use-library";
 
-function App() {
+export const App: FC = () => {
   const { library, song, dispatch } = useLibrary();
   const playback = usePlayback(song);
 
@@ -159,4 +159,3 @@ function App() {
   );
 }
 
-export default App;

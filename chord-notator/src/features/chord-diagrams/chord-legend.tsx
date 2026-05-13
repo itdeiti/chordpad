@@ -1,18 +1,18 @@
-import { useMemo } from "react";
+import { type FC, useMemo } from "react";
 import { formatChord } from "domain/notation/format";
 import type { Chord, Song } from "domain/types";
-import ChordDiagram from "./chord-diagram";
+import { ChordDiagram } from "./chord-diagram";
 import { lookupFingering } from "./db-adapter";
 import { useFingerings } from "./use-fingerings";
 
-interface Props {
+type Props = {
   song: Song;
-}
+};
 
 // Walks every chord in the song and returns each unique symbol once, in
 // first-occurrence order. Uses formatChord() as the canonical key so chords
 // that render identically (e.g. equivalent extensions) dedupe correctly.
-function uniqueChords(song: Song): Chord[] {
+const uniqueChords = (song: Song): Chord[] => {
   const seen = new Set<string>();
   const out: Chord[] = [];
   for (const section of song.sections) {
@@ -25,9 +25,9 @@ function uniqueChords(song: Song): Chord[] {
     }
   }
   return out;
-}
+};
 
-function ChordLegend({ song }: Props) {
+export const ChordLegend: FC<Props> = ({ song }) => {
   const { db, loading } = useFingerings();
   const chords = useMemo(() => uniqueChords(song), [song]);
 
@@ -50,6 +50,4 @@ function ChordLegend({ song }: Props) {
       })}
     </div>
   );
-}
-
-export default ChordLegend;
+};

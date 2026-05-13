@@ -1,3 +1,1 @@
-import SectionTabs from "./section-tabs";
-
-export default SectionTabs;
+export * from "./section-tabs";

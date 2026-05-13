@@ -6,8 +6,7 @@ import {
   SVGProps,
 } from "react";
 
-export interface CardProps
-  extends Omit<ComponentProps<"div">, "className" | "children"> {
+export type CardProps = Omit<ComponentProps<"div">, "className" | "children"> & {
   title: string;
   description: string;
   Icon: ForwardRefExoticComponent<
@@ -19,7 +18,7 @@ export interface CardProps
   href: string;
 }
 
-const Card = forwardRef<HTMLDivElement, CardProps>(
+export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ title, description, Icon, href, ...rest }, ref) => {
     return (
       <div
@@ -51,4 +50,3 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
   },
 );
 
-export default Card;

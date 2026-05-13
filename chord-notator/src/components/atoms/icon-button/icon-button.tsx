@@ -1,6 +1,6 @@
 import { forwardRef, ComponentProps, ComponentType } from "react";
 
-interface Props extends Omit<ComponentProps<"button">, "className"> {
+type Props = Omit<ComponentProps<"button">, "className"> & {
   Icon: ComponentType<{ className?: string }>;
   label: string;
 }
@@ -24,4 +24,4 @@ const IconButton = forwardRef<HTMLButtonElement, Props>(
 
 IconButton.displayName = "IconButton";
 
-export default IconButton;
+export { IconButton };

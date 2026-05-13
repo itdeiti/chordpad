@@ -1,18 +1,18 @@
-import { useEffect } from "react";
-import RootGrid from "components/molecules/root-grid";
-import ModifierPanel from "components/molecules/modifier-panel";
-import StagingPreview from "components/molecules/staging-preview";
+import { type FC, useEffect } from "react";
+import { RootGrid } from "components/molecules/root-grid";
+import { ModifierPanel } from "components/molecules/modifier-panel";
+import { StagingPreview } from "components/molecules/staging-preview";
 import type { SongAction } from "state/song-reducer";
 import type { Staging } from "domain/types";
 
-interface Props {
+type Props = {
   staging: Staging | null;
   dispatch: (a: SongAction) => void;
 }
 
 const DEFAULT_STAGING: Staging = { quality: "major", extensions: [], beats: 4 };
 
-function ChordBuilder({ staging, dispatch }: Props) {
+export const ChordBuilder: FC<Props> = ({ staging, dispatch }) => {
   const view = staging ?? DEFAULT_STAGING;
 
   useEffect(() => {
@@ -57,4 +57,3 @@ function ChordBuilder({ staging, dispatch }: Props) {
   );
 }
 
-export default ChordBuilder;

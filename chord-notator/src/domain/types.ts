@@ -40,7 +40,7 @@ export const BEAT_OPTIONS = [1, 2, 3, 4] as const;
 export type Beats = (typeof BEAT_OPTIONS)[number];
 export const BEATS_PER_BAR = 4;
 
-export interface Chord {
+export type Chord = {
   id: string;
   root: RootNote;
   quality: Quality;
@@ -49,13 +49,13 @@ export interface Chord {
   beats: Beats;
 }
 
-export interface Section {
+export type Section = {
   id: string;
   name: string;
   chords: Chord[];
 }
 
-export interface Staging {
+export type Staging = {
   root?: RootNote;
   quality: Quality;
   extensions: Extension[];
@@ -65,7 +65,7 @@ export interface Staging {
 
 export type DisplayMode = "letters" | "roman";
 
-export interface Song {
+export type Song = {
   id: string;
   name: string;
   key: RootNote;
@@ -76,7 +76,7 @@ export interface Song {
   staging: Staging | null;
 }
 
-export interface Library {
+export type Library = {
   songs: Song[];
   activeSongId: string;
 }

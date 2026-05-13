@@ -1,6 +1,6 @@
 // Shape of one guitar voicing — matches @tombatossals/chords-db's `Position`
 // (6 strings, left-to-right = low E → high E).
-export interface Fingering {
+export type Fingering = {
   // -1 = muted string, 0 = open, positive int = fret number (relative to baseFret)
   frets: number[];
   // 0 = no finger / open / muted, 1..4 = which finger frets it
@@ -12,13 +12,13 @@ export interface Fingering {
 }
 
 // One entry in the DB's chords[KEY] array.
-export interface DbChordEntry {
+export type DbChordEntry = {
   key: string;
   suffix: string;
   positions: Fingering[];
 }
 
 // Top-level DB shape (just the bits we use).
-export interface ChordDb {
+export type ChordDb = {
   chords: Record<string, DbChordEntry[]>;
 }
