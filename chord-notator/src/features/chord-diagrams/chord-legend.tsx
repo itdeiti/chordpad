@@ -17,6 +17,8 @@ const uniqueChords = (song: Song): Chord[] => {
   const out: Chord[] = [];
   for (const section of song.sections) {
     for (const chord of section.chords) {
+      // Unparsed chords have no fingering — exclude them from the legend.
+      if (chord.raw) continue;
       const key = formatChord(chord);
       if (!seen.has(key)) {
         seen.add(key);

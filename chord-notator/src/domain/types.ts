@@ -47,7 +47,15 @@ export type Chord = {
   extensions: Extension[];
   bass?: RootNote;
   beats: Beats;
+  // When present, the chord couldn't be parsed (e.g. pasted "Xyz") and renders
+  // as the raw text. Such chords skip transpose, playback, and the diagram
+  // legend; root/quality/extensions are placeholder values.
+  raw?: string;
 }
+
+// A Chord without the runtime id — used at the boundary between the parser
+// (which doesn't mint ids) and the reducer (which does).
+export type ChordSpec = Omit<Chord, "id">;
 
 export type Section = {
   id: string;

@@ -8,6 +8,8 @@ export function transposeRoot(root: RootNote, semitones: number): RootNote {
 }
 
 export function transposeChord(chord: Chord, semitones: number): Chord {
+  // Unparsed chords have no structured root/bass to shift — leave them as-is.
+  if (chord.raw) return chord;
   return {
     ...chord,
     root: transposeRoot(chord.root, semitones),

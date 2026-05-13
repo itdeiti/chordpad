@@ -1,5 +1,6 @@
-import { type FC, useEffect } from "react";
+import { type FC, useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { PasteChordsDialog } from "components/molecules/paste-chords-dialog";
 import { SectionTabs } from "components/molecules/section-tabs";
 import { SongPicker } from "components/molecules/song-picker";
 import { SongToolbar } from "components/molecules/song-toolbar";
@@ -13,6 +14,7 @@ import { useLibrary } from "state/use-library";
 export const App: FC = () => {
   const { library, song, dispatch } = useLibrary();
   const playback = usePlayback(song);
+  const [pasteOpen, setPasteOpen] = useState(false);
 
   // Playback follow: when the transport enters a new section, focus that
   // section so the chord-pill highlight stays visible. FOCUS_SECTION (vs
@@ -143,7 +145,23 @@ export const App: FC = () => {
                 toIndex,
               })
             }
+            onOpenPaste={() => setPasteOpen(true)}
           />
+          {pasteOpen && (
+            <PasteChordsDialog
+              open={pasteOpen}
+              sectionName={activeSection.name}
+              onClose={() => setPasteOpen(false)}
+              onSubmit={(chords, mode) =>
+                dispatch({
+                  type: "INGEST_CHORDS",
+                  sectionId: activeSection.id,
+                  chords,
+                  mode,
+                })
+              }
+            />
+          )}
         </div>
 
         <CircleOfFifths section={activeSection} />
@@ -156,10 +174,7 @@ export const App: FC = () => {
           />
         </div>
 
-        <h2
-          data-print-only
-          className="text-2xl font-bold text-black mb-4"
-        >
+        <h2 data-print-only className="text-2xl font-bold text-black mb-4">
           {song.name}
         </h2>
 
@@ -170,5 +185,4 @@ export const App: FC = () => {
       </div>
     </main>
   );
-}
-
+};

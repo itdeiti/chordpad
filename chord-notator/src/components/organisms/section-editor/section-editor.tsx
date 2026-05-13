@@ -1,4 +1,5 @@
 import { type FC } from "react";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/outline";
 import {
   DndContext,
   closestCenter,
@@ -24,6 +25,7 @@ type Props = {
   onDeleteChord: (chordId: string) => void;
   onEditChord: (chordId: string) => void;
   onReorderChord: (fromIndex: number, toIndex: number) => void;
+  onOpenPaste: () => void;
 }
 
 type SortablePillProps = {
@@ -91,6 +93,7 @@ export const SectionEditor: FC<Props> = ({
   onDeleteChord,
   onEditChord,
   onReorderChord,
+  onOpenPaste,
 }) => {
   const sensors = useDragSensors();
 
@@ -104,8 +107,19 @@ export const SectionEditor: FC<Props> = ({
 
   return (
     <div className="rounded-lg border border-gray-800 bg-gray-600/10 p-4 bg-blend-color-burn">
-      <div className="text-xs uppercase tracking-wide text-gray-400 mb-3">
-        {section.name}
+      <div className="mb-3 flex items-center justify-between">
+        <div className="text-xs uppercase tracking-wide text-gray-400">
+          {section.name}
+        </div>
+        <button
+          type="button"
+          onClick={onOpenPaste}
+          className="inline-flex items-center gap-1 rounded-md border border-gray-700 px-2 py-1 text-xs text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+          title="Paste a chord progression into this section"
+        >
+          <ClipboardDocumentIcon className="w-3.5 h-3.5" />
+          Paste…
+        </button>
       </div>
       {section.chords.length === 0 ? (
         <p className="text-gray-500 text-sm italic">

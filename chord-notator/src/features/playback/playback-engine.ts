@@ -120,7 +120,9 @@ export class PlaybackEngine {
         events.push({
           sectionId: section.id,
           chordId: chord.id,
-          notes: chordToNotes(chord),
+          // Unparsed chords have no voicing; treat them as silent rests so the
+          // playback cursor still walks across them in time.
+          notes: chord.raw ? [] : chordToNotes(chord),
           beats: chord.beats,
         });
       }

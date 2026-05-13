@@ -62,6 +62,9 @@ function romanFor(root: RootNote, key: RootNote, isUpper: boolean): string {
 }
 
 export function formatChord(c: Chord | Staging, key?: RootNote, roman = false): string {
+  // Unparsed (raw) chords bypass the formatter — they have no semantic meaning
+  // to render, just the literal text the user pasted.
+  if ("raw" in c && c.raw) return c.raw;
   if (!c.root) return "";
   const isUpper = c.quality === "major" || c.quality === "aug";
   let s: string;

@@ -1,8 +1,10 @@
 import { arrayMove } from "@dnd-kit/sortable";
+import { isExtensionAllowed } from "domain/theory/extension-rules";
 import { transposeSong } from "domain/theory/transpose";
 import type {
   Beats,
   Chord,
+  ChordSpec,
   DisplayMode,
   Extension,
   Quality,
@@ -11,6 +13,8 @@ import type {
   Song,
   Staging,
 } from "domain/types";
+
+export { isExtensionAllowed };
 
 const emptyStaging: Staging = {
   quality: "major",
@@ -73,6 +77,12 @@ export type SongAction =
   | { type: "COMMIT_CHORD" }
   | { type: "DELETE_CHORD"; sectionId: string; chordId: string }
   | { type: "START_EDIT_CHORD"; sectionId: string; chordId: string }
+  | {
+      type: "INGEST_CHORDS";
+      sectionId: string;
+      chords: ChordSpec[];
+      mode: "append" | "replace";
+    }
   | { type: "RESET_SONG" }
   | { type: "TRANSPOSE"; semitones: number }
   | { type: "SET_KEY"; key: RootNote }
@@ -264,7 +274,7 @@ export function songReducer(song: Song, action: SongAction): Song {
     case "START_EDIT_CHORD": {
       const section = song.sections.find((s) => s.id === action.sectionId);
       const chord = section?.chords.find((c) => c.id === action.chordId);
-      if (!chord) return song;
+      if (!chord || chord.raw) return song;
       const staging: Staging = {
         root: chord.root,
         quality: chord.quality,
@@ -277,6 +287,27 @@ export function songReducer(song: Song, action: SongAction): Song {
         activeSectionId: action.sectionId,
         staging,
         editingChordId: chord.id,
+      };
+    }
+
+    case "INGEST_CHORDS": {
+      const minted: Chord[] = action.chords.map((spec) => ({
+        ...spec,
+        id: uuid(),
+      }));
+      return {
+        ...song,
+        sections: song.sections.map((s) =>
+          s.id === action.sectionId
+            ? {
+                ...s,
+                chords:
+                  action.mode === "replace" ? minted : [...s.chords, ...minted],
+              }
+            : s,
+        ),
+        staging: null,
+        editingChordId: null,
       };
     }
 
@@ -324,26 +355,6 @@ export function songReducer(song: Song, action: SongAction): Song {
     case "TOGGLE_DIAGRAMS":
       return { ...song, showDiagrams: !song.showDiagrams };
   }
-}
-
-export function isExtensionAllowed(
-  ext: Extension,
-  quality: Quality,
-): boolean {
-  // m7 / maj7 are sevenths; they're redundant or contradictory when the
-  // base quality already implies a 7th type.
-  if (quality === "minor" && ext === "m7") return false;
-  if (quality === "minor" && ext === "maj7") return false;
-  if (quality === "dim" && (ext === "maj7" || ext === "m7")) return false;
-  if (quality === "aug" && (ext === "maj7" || ext === "m7")) return false;
-  // 6 / sixth is meaningful only on major / minor (dim6 and aug6 aren't standard).
-  if (ext === "6" && (quality === "dim" || quality === "aug")) return false;
-  // b5 / #5 alter the fifth, but dim already lowers it and aug already raises it —
-  // disallowing avoids redundant or self-contradictory voicings.
-  if ((ext === "b5" || ext === "#5") && (quality === "dim" || quality === "aug")) {
-    return false;
-  }
-  return true;
 }
 
 function pruneIncompatible(staging: Staging): Staging {
