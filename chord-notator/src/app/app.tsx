@@ -6,6 +6,7 @@ import SongToolbar from "components/molecules/song-toolbar";
 import ChordBuilder from "components/organisms/chord-builder";
 import SectionEditor from "components/organisms/section-editor";
 import ChordChart from "components/organisms/chord-chart";
+import { CircleOfFifths } from "features/circle-of-fifths";
 import { PlaybackControls, usePlayback } from "features/playback";
 import { useLibrary } from "state/use-library";
 
@@ -135,6 +136,8 @@ function App() {
             }
           />
         </div>
+
+        <CircleOfFifths section={activeSection} />
 
         <div data-print-hide>
           <ChordBuilder staging={song.staging} dispatch={dispatch} />
