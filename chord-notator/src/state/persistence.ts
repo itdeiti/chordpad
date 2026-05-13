@@ -30,6 +30,7 @@ function normalize(song: Song): Song {
     displayMode: song.displayMode ?? "letters",
     showDiagrams: song.showDiagrams ?? true,
     staging: null,
+    editingChordId: null,
   };
 }
 

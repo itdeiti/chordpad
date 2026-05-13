@@ -53,6 +53,7 @@ export function initialSong(name: string = "My Song"): Song {
     sections,
     activeSectionId: sections[1].id,
     staging: null,
+    editingChordId: null,
   };
 }
 
@@ -71,6 +72,7 @@ export type SongAction =
   | { type: "CLEAR_STAGING" }
   | { type: "COMMIT_CHORD" }
   | { type: "DELETE_CHORD"; sectionId: string; chordId: string }
+  | { type: "START_EDIT_CHORD"; sectionId: string; chordId: string }
   | { type: "RESET_SONG" }
   | { type: "TRANSPOSE"; semitones: number }
   | { type: "SET_KEY"; key: RootNote }
@@ -102,7 +104,12 @@ function toggleExt(staging: Staging, ext: Extension): Staging {
 export function songReducer(song: Song, action: SongAction): Song {
   switch (action.type) {
     case "SELECT_SECTION":
-      return { ...song, activeSectionId: action.id, staging: null };
+      return {
+        ...song,
+        activeSectionId: action.id,
+        staging: null,
+        editingChordId: null,
+      };
 
     case "FOCUS_SECTION":
       // Like SELECT_SECTION but preserves staging — used by playback follow,
@@ -119,6 +126,7 @@ export function songReducer(song: Song, action: SongAction): Song {
         sections: [...song.sections, section],
         activeSectionId: section.id,
         staging: null,
+        editingChordId: null,
       };
     }
 
@@ -156,7 +164,13 @@ export function songReducer(song: Song, action: SongAction): Song {
         clone,
         ...song.sections.slice(index + 1),
       ];
-      return { ...song, sections, activeSectionId: clone.id, staging: null };
+      return {
+        ...song,
+        sections,
+        activeSectionId: clone.id,
+        staging: null,
+        editingChordId: null,
+      };
     }
 
     case "SET_ROOT":
@@ -184,10 +198,35 @@ export function songReducer(song: Song, action: SongAction): Song {
       return withStaging(song, { beats: action.beats });
 
     case "CLEAR_STAGING":
-      return { ...song, staging: null };
+      return { ...song, staging: null, editingChordId: null };
 
     case "COMMIT_CHORD": {
       if (!song.staging?.root) return song;
+      // Edit mode: replace the existing chord in-place, preserving its id and
+      // position. Otherwise append a new chord to the active section.
+      if (song.editingChordId) {
+        const editingId = song.editingChordId;
+        return {
+          ...song,
+          sections: song.sections.map((s) => ({
+            ...s,
+            chords: s.chords.map((c) =>
+              c.id === editingId
+                ? {
+                    id: c.id,
+                    root: song.staging!.root!,
+                    quality: song.staging!.quality,
+                    extensions: [...song.staging!.extensions],
+                    bass: song.staging!.bass,
+                    beats: song.staging!.beats,
+                  }
+                : c,
+            ),
+          })),
+          staging: null,
+          editingChordId: null,
+        };
+      }
       const chord: Chord = {
         id: uuid(),
         root: song.staging.root,
@@ -207,7 +246,10 @@ export function songReducer(song: Song, action: SongAction): Song {
       };
     }
 
-    case "DELETE_CHORD":
+    case "DELETE_CHORD": {
+      // Deleting the chord currently being edited also exits edit mode so the
+      // builder doesn't keep pointing at a chord that no longer exists.
+      const exitEdit = song.editingChordId === action.chordId;
       return {
         ...song,
         sections: song.sections.map((s) =>
@@ -215,7 +257,28 @@ export function songReducer(song: Song, action: SongAction): Song {
             ? { ...s, chords: s.chords.filter((c) => c.id !== action.chordId) }
             : s,
         ),
+        ...(exitEdit ? { staging: null, editingChordId: null } : {}),
       };
+    }
+
+    case "START_EDIT_CHORD": {
+      const section = song.sections.find((s) => s.id === action.sectionId);
+      const chord = section?.chords.find((c) => c.id === action.chordId);
+      if (!chord) return song;
+      const staging: Staging = {
+        root: chord.root,
+        quality: chord.quality,
+        extensions: [...chord.extensions],
+        bass: chord.bass,
+        beats: chord.beats,
+      };
+      return {
+        ...song,
+        activeSectionId: action.sectionId,
+        staging,
+        editingChordId: chord.id,
+      };
+    }
 
     case "RESET_SONG": {
       // Preserve id + name so the song stays in the library; this is a
@@ -225,7 +288,13 @@ export function songReducer(song: Song, action: SongAction): Song {
     }
 
     case "TRANSPOSE":
-      return transposeSong(song, action.semitones);
+      // Editing a chord while transposing the whole song is ambiguous —
+      // exit edit mode so the user re-picks against the new key.
+      return {
+        ...transposeSong(song, action.semitones),
+        staging: null,
+        editingChordId: null,
+      };
 
     case "SET_KEY":
       return { ...song, key: action.key };

@@ -21,7 +21,7 @@ function b64UrlDecode(s: string): string {
 }
 
 export function encodeSongToUrl(song: Song): string {
-  const slim: Song = { ...song, staging: null };
+  const slim: Song = { ...song, staging: null, editingChordId: null };
   const payload = b64UrlEncode(JSON.stringify(slim));
   const { origin, pathname } = window.location;
   return `${origin}${pathname}${HASH_PREFIX}${payload}`;

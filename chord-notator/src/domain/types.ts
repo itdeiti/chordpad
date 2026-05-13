@@ -74,6 +74,7 @@ export type Song = {
   sections: Section[];
   activeSectionId: string;
   staging: Staging | null;
+  editingChordId: string | null;
 }
 
 export type Library = {

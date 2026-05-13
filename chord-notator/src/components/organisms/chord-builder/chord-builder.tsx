@@ -7,12 +7,13 @@ import type { Staging } from "domain/types";
 
 type Props = {
   staging: Staging | null;
+  editing: boolean;
   dispatch: (a: SongAction) => void;
 }
 
 const DEFAULT_STAGING: Staging = { quality: "major", extensions: [], beats: 4 };
 
-export const ChordBuilder: FC<Props> = ({ staging, dispatch }) => {
+export const ChordBuilder: FC<Props> = ({ staging, editing, dispatch }) => {
   const view = staging ?? DEFAULT_STAGING;
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export const ChordBuilder: FC<Props> = ({ staging, dispatch }) => {
       <StagingPreview
         staging={staging}
         beats={view.beats}
+        editing={editing}
         onSetBeats={(beats) => dispatch({ type: "SET_BEATS", beats })}
         onAdd={() => dispatch({ type: "COMMIT_CHORD" })}
         onClear={() => dispatch({ type: "CLEAR_STAGING" })}

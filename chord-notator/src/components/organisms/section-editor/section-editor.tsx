@@ -20,7 +20,9 @@ type Props = {
   songKey: RootNote;
   roman: boolean;
   currentChordId: string | null;
+  editingChordId: string | null;
   onDeleteChord: (chordId: string) => void;
+  onEditChord: (chordId: string) => void;
   onReorderChord: (fromIndex: number, toIndex: number) => void;
 }
 
@@ -29,7 +31,9 @@ type SortablePillProps = {
   songKey: RootNote;
   roman: boolean;
   playing: boolean;
+  editing: boolean;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
 const SortablePill: FC<SortablePillProps> = ({
@@ -37,7 +41,9 @@ const SortablePill: FC<SortablePillProps> = ({
   songKey,
   roman,
   playing,
+  editing,
   onDelete,
+  onEdit,
 }) => {
   const {
     attributes,
@@ -60,6 +66,7 @@ const SortablePill: FC<SortablePillProps> = ({
         songKey={songKey}
         roman={roman}
         playing={playing}
+        editing={editing}
         dragHandle={
           <DragHandle
             label="Drag chord"
@@ -68,6 +75,7 @@ const SortablePill: FC<SortablePillProps> = ({
             className="self-center text-gray-500 hover:text-gray-200"
           />
         }
+        onEdit={onEdit}
         onDelete={onDelete}
       />
     </div>
@@ -79,7 +87,9 @@ export const SectionEditor: FC<Props> = ({
   songKey,
   roman,
   currentChordId,
+  editingChordId,
   onDeleteChord,
+  onEditChord,
   onReorderChord,
 }) => {
   const sensors = useDragSensors();
@@ -119,7 +129,9 @@ export const SectionEditor: FC<Props> = ({
                   songKey={songKey}
                   roman={roman}
                   playing={c.id === currentChordId}
+                  editing={c.id === editingChordId}
                   onDelete={() => onDeleteChord(c.id)}
+                  onEdit={() => onEditChord(c.id)}
                 />
               ))}
             </div>

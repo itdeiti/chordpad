@@ -59,7 +59,12 @@ export function libraryReducer(lib: Library, action: LibraryAction): Library {
     case "IMPORT_SONG": {
       // Assign a fresh id so a user who shares a URL back to themselves doesn't
       // collide with the original entry; the import always becomes a new song.
-      const imported: Song = { ...action.song, id: uuid(), staging: null };
+      const imported: Song = {
+        ...action.song,
+        id: uuid(),
+        staging: null,
+        editingChordId: null,
+      };
       return {
         songs: [...lib.songs, imported],
         activeSongId: imported.id,

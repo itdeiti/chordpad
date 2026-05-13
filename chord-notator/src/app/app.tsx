@@ -120,9 +120,17 @@ export const App: FC = () => {
             songKey={song.key}
             roman={song.displayMode === "roman"}
             currentChordId={playback.currentChordId}
+            editingChordId={song.editingChordId}
             onDeleteChord={(chordId) =>
               dispatch({
                 type: "DELETE_CHORD",
+                sectionId: activeSection.id,
+                chordId,
+              })
+            }
+            onEditChord={(chordId) =>
+              dispatch({
+                type: "START_EDIT_CHORD",
                 sectionId: activeSection.id,
                 chordId,
               })
@@ -141,7 +149,11 @@ export const App: FC = () => {
         <CircleOfFifths section={activeSection} />
 
         <div data-print-hide>
-          <ChordBuilder staging={song.staging} dispatch={dispatch} />
+          <ChordBuilder
+            staging={song.staging}
+            editing={song.editingChordId !== null}
+            dispatch={dispatch}
+          />
         </div>
 
         <h2

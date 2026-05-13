@@ -5,6 +5,7 @@ import { BEAT_OPTIONS, type Beats, type Staging } from "domain/types";
 type Props = {
   staging: Staging | null;
   beats: Beats;
+  editing: boolean;
   onSetBeats: (beats: Beats) => void;
   onAdd: () => void;
   onClear: () => void;
@@ -13,6 +14,7 @@ type Props = {
 export const StagingPreview: FC<Props> = ({
   staging,
   beats,
+  editing,
   onSetBeats,
   onAdd,
   onClear,
@@ -24,7 +26,7 @@ export const StagingPreview: FC<Props> = ({
     <div className="flex flex-col gap-3 rounded-lg border border-gray-700 bg-gray-800/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <div className="text-xs uppercase tracking-wide text-gray-400">
-          Building
+          {editing ? "Editing" : "Building"}
         </div>
         <div className="text-3xl font-mono font-bold text-purple-200 leading-none mt-1">
           {text}
@@ -61,7 +63,7 @@ export const StagingPreview: FC<Props> = ({
             disabled={!staging}
             className="px-3 py-2 rounded-md text-sm font-semibold border border-gray-600 text-gray-200 hover:bg-gray-700 disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
-            Clear
+            {editing ? "Cancel" : "Clear"}
           </button>
           <button
             type="button"
@@ -69,7 +71,7 @@ export const StagingPreview: FC<Props> = ({
             disabled={!canCommit}
             className="px-4 py-2 rounded-md text-sm font-semibold bg-purple-500 text-white hover:bg-purple-400 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-300"
           >
-            Add Chord
+            {editing ? "Save Changes" : "Add Chord"}
           </button>
         </div>
       </div>
