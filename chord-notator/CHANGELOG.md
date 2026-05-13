@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/itdeiti/chordpad/compare/v5.1.0...v5.2.0) (2026-05-13)
+
+
+### Features
+
+* add the ability to paste raw chords and parse them. implement tests for parsing ([360b4ce](https://github.com/itdeiti/chordpad/commit/360b4cef23665d76346bc3c695c7a8a00a6d3d41))
+
 ## [5.1.0](https://github.com/itdeiti/chordpad/compare/v5.0.0...v5.1.0) (2026-05-13)
 
 
