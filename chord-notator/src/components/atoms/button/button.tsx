@@ -1,9 +1,10 @@
-import { forwardRef, ComponentProps } from "react";
+import { ComponentProps, Ref } from "react";
 
-export const Button = forwardRef<
-  HTMLButtonElement,
-  Omit<ComponentProps<"button">, "className">
->(({ children, ...rest }, ref) => {
+type Props = Omit<ComponentProps<"button">, "className"> & {
+  ref?: Ref<HTMLButtonElement>;
+};
+
+export const Button = ({ children, ref, ...rest }: Props) => {
   return (
     <button
       ref={ref}
@@ -13,5 +14,4 @@ export const Button = forwardRef<
       {children}
     </button>
   );
-});
-
+};

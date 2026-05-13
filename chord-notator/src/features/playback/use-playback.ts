@@ -9,7 +9,7 @@ export function usePlayback(song: Song) {
   const [playing, setPlaying] = useState(false);
   const [currentChordId, setCurrentChordId] = useState<string | null>(null);
   const [currentSectionId, setCurrentSectionId] = useState<string | null>(null);
-  const [tempo, setTempoState] = useState(DEFAULT_TEMPO);
+  const [tempo, setTempo] = useState(DEFAULT_TEMPO);
 
   useEffect(() => {
     const engine = new PlaybackEngine();
@@ -39,8 +39,8 @@ export function usePlayback(song: Song) {
     setPlaying(false);
   };
 
-  const setTempo = (bpm: number) => {
-    setTempoState(bpm);
+  const handleTempoChange = (bpm: number) => {
+    setTempo(bpm);
     engineRef.current?.setTempo(bpm);
   };
 
@@ -51,6 +51,6 @@ export function usePlayback(song: Song) {
     tempo,
     play,
     stop,
-    setTempo,
+    setTempo: handleTempoChange,
   };
 }
