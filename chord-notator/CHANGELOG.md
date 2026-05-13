@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/itdeiti/chordpad/compare/v4.0.0...v4.1.0) (2026-05-13)
+
+
+### Features
+
+* add more chord extensions ([ce26b72](https://github.com/itdeiti/chordpad/commit/ce26b728df0a61168c4479da19a33949bcb9e634))
+
+
+### Bug Fixes
+
+* add logic so dragging works on mobile devices ([610f9af](https://github.com/itdeiti/chordpad/commit/610f9af03fb3abeffd3a672f388fe1a81f87bbda))
+
 ## [4.0.0](https://github.com/itdeiti/chordpad/compare/v3.0.0...v4.0.0) (2026-05-13)
 
 
