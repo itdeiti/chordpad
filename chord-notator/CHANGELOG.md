@@ -1,5 +1,22 @@
 # Changelog
 
+## [5.0.0](https://github.com/itdeiti/chordpad/compare/v4.2.0...v5.0.0) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Full refactor summary — all four conventions enforced across src/:
+
+### Features
+
+* song-reducer.ts — added DUPLICATE_SECTION action + nextCopyName helper. Inserts clone right after the source, gives fresh UUIDs to the section and each chord, makes the clone active, clears staging. Naming: "Verse" → "Verse copy" → "Verse copy 2" → "Verse copy 3". ([650672f](https://github.com/itdeiti/chordpad/commit/650672f8ee4a2c1cc3544c4910b9b60bc11423a2))
+
+
+### Bug Fixes
+
+* Full refactor summary — all four conventions enforced across src/: ([2e33e3a](https://github.com/itdeiti/chordpad/commit/2e33e3a28b556f8f81f1667161d8f6a21948a1b4))
+* no default export ([c9d507f](https://github.com/itdeiti/chordpad/commit/c9d507fa3d94902b21e53e72ed0cc86699f6d88e))
+
 ## [4.2.0](https://github.com/itdeiti/chordpad/compare/v4.1.0...v4.2.0) (2026-05-13)
 
 
