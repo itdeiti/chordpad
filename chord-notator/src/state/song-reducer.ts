@@ -26,6 +26,14 @@ function makeSection(name: string): Section {
   return { id: uuid(), name, chords: [] };
 }
 
+// "Verse" -> "Verse copy", "Verse copy" -> "Verse copy 2", "Verse copy 7" -> "Verse copy 8".
+function nextCopyName(name: string): string {
+  const match = name.match(/^(.*\bcopy)(?: (\d+))?$/);
+  if (!match) return `${name} copy`;
+  const n = match[2] ? Number(match[2]) + 1 : 2;
+  return `${match[1]} ${n}`;
+}
+
 export function initialSong(name: string = "My Song"): Song {
   const sections: Section[] = [
     makeSection("Intro"),
@@ -54,6 +62,7 @@ export type SongAction =
   | { type: "ADD_SECTION"; name: string }
   | { type: "RENAME_SECTION"; id: string; name: string }
   | { type: "DELETE_SECTION"; id: string }
+  | { type: "DUPLICATE_SECTION"; id: string }
   | { type: "SET_ROOT"; root: RootNote }
   | { type: "SET_QUALITY"; quality: Quality }
   | { type: "TOGGLE_EXTENSION"; ext: Extension }
@@ -131,6 +140,23 @@ export function songReducer(song: Song, action: SongAction): Song {
           ? remaining[0].id
           : song.activeSectionId;
       return { ...song, sections: remaining, activeSectionId: nextActive };
+    }
+
+    case "DUPLICATE_SECTION": {
+      const index = song.sections.findIndex((s) => s.id === action.id);
+      if (index < 0) return song;
+      const source = song.sections[index];
+      const clone: Section = {
+        id: uuid(),
+        name: nextCopyName(source.name),
+        chords: source.chords.map((c) => ({ ...c, id: uuid() })),
+      };
+      const sections = [
+        ...song.sections.slice(0, index + 1),
+        clone,
+        ...song.sections.slice(index + 1),
+      ];
+      return { ...song, sections, activeSectionId: clone.id, staging: null };
     }
 
     case "SET_ROOT":

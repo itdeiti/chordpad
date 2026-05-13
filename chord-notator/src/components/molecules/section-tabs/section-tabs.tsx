@@ -1,5 +1,9 @@
 import { type FC, useState, KeyboardEvent } from "react";
-import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentDuplicateIcon,
+  PlusIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import {
   DndContext,
   closestCenter,
@@ -23,6 +27,7 @@ type Props = {
   onAdd: (name: string) => void;
   onRename: (id: string, name: string) => void;
   onDelete: (id: string) => void;
+  onDuplicate: (id: string) => void;
   onReorder: (fromIndex: number, toIndex: number) => void;
 }
 
@@ -35,6 +40,7 @@ type TabProps = {
   onStartRename: () => void;
   onSelect: () => void;
   onDelete: () => void;
+  onDuplicate: () => void;
   onDraftChange: (v: string) => void;
   onCommitRename: () => void;
   onCancelRename: () => void;
@@ -49,6 +55,7 @@ const SortableTab: FC<TabProps> = ({
   onStartRename,
   onSelect,
   onDelete,
+  onDuplicate,
   onDraftChange,
   onCommitRename,
   onCancelRename,
@@ -107,6 +114,13 @@ const SortableTab: FC<TabProps> = ({
           {section.name}
         </button>
       )}
+      {active && !isEditing && (
+        <IconButton
+          Icon={DocumentDuplicateIcon}
+          label={`Duplicate ${section.name}`}
+          onClick={onDuplicate}
+        />
+      )}
       {active && canDelete && !isEditing && (
         <IconButton
           Icon={XMarkIcon}
@@ -125,6 +139,7 @@ export const SectionTabs: FC<Props> = ({
   onAdd,
   onRename,
   onDelete,
+  onDuplicate,
   onReorder,
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -177,6 +192,7 @@ export const SectionTabs: FC<Props> = ({
               onStartRename={() => startRename(s)}
               onSelect={() => onSelect(s.id)}
               onDelete={() => onDelete(s.id)}
+              onDuplicate={() => onDuplicate(s.id)}
               onDraftChange={setDraftName}
               onCommitRename={commitRename}
               onCancelRename={() => setEditingId(null)}

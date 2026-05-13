@@ -2,9 +2,9 @@ import { forwardRef, ComponentProps } from "react";
 
 type Props = Omit<ComponentProps<"button">, "className"> & {
   selected?: boolean;
-}
+};
 
-export const ChordButton = forwardRef<HTMLButtonElement, Props>(
+const ChordButton = forwardRef<HTMLButtonElement, Props>(
   ({ children, selected = false, disabled, type, ...rest }, ref) => {
     // min-w-16 (4rem / 64px) gives every button a uniform minimum width so
     // short labels ("7", "6", "B") stretch to match longer ones ("add11", "maj7")
@@ -32,4 +32,4 @@ export const ChordButton = forwardRef<HTMLButtonElement, Props>(
 );
 
 ChordButton.displayName = "ChordButton";
-
+export { ChordButton };

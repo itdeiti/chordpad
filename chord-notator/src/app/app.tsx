@@ -84,6 +84,7 @@ export const App: FC = () => {
               dispatch({ type: "RENAME_SECTION", id, name })
             }
             onDelete={(id) => dispatch({ type: "DELETE_SECTION", id })}
+            onDuplicate={(id) => dispatch({ type: "DUPLICATE_SECTION", id })}
             onReorder={(fromIndex, toIndex) =>
               dispatch({ type: "REORDER_SECTION", fromIndex, toIndex })
             }
