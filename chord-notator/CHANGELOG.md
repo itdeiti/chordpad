@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/itdeiti/chordpad/compare/v4.1.0...v4.2.0) (2026-05-13)
+
+
+### Features
+
+* add circle of fifths ([884a0bc](https://github.com/itdeiti/chordpad/commit/884a0bcefdd0ea233ca66db3d732adf2d47fb798))
+
 ## [4.1.0](https://github.com/itdeiti/chordpad/compare/v4.0.0...v4.1.0) (2026-05-13)
 
 
