@@ -55,6 +55,11 @@ export function chordToNotes(chord: Chord, baseOctave: number = 4): string[] {
   if (hasSus4) thirdInterval = 5;
   else if (hasSus2) thirdInterval = 2;
 
+  // Fifth alterations *replace* the fifth, not add to it. b5 + #5 simultaneously
+  // doesn't make sense; #5 wins (matches augmented-quality semantics).
+  if (chord.extensions.includes("#5")) fifth = 8;
+  else if (chord.extensions.includes("b5")) fifth = 6;
+
   const intervals: number[] = [0];
   if (thirdInterval !== null) intervals.push(thirdInterval);
   intervals.push(fifth);
@@ -74,8 +79,29 @@ export function chordToNotes(chord: Chord, baseOctave: number = 4): string[] {
       case "add11":
         intervals.push(17);
         break;
+      case "6":
+        intervals.push(9);
+        break;
+      case "13":
+        intervals.push(21);
+        break;
+      case "b9":
+        intervals.push(13);
+        break;
+      case "#9":
+        intervals.push(15);
+        break;
+      case "alt":
+        // Jazz "altered" implies dom7 + altered 9ths. The altered 5th(s) are
+        // handled above as fifth-replacement; here we add the seventh and the
+        // altered ninths. The dedupe via Set below removes any overlap with an
+        // explicit 7 toggle.
+        intervals.push(10, 13, 15);
+        break;
       case "sus2":
       case "sus4":
+      case "b5":
+      case "#5":
         break;
     }
   }

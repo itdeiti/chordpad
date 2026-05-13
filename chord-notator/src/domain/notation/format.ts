@@ -2,6 +2,7 @@ import {
   BEATS_PER_BAR,
   ROOT_NOTES,
   type Chord,
+  type Extension,
   type RootNote,
   type Section,
   type Song,
@@ -23,6 +24,32 @@ const ROMAN_NUMERALS = [
   "VII",
 ] as const;
 
+// Canonical display order for extensions, regardless of toggle order. Keeps
+// output stable (`C7b5` always, never `Cb57`) and makes the leading-extension
+// check below deterministic. Anything not listed sorts after the named entries.
+const EXTENSION_ORDER: Extension[] = [
+  "7",
+  "maj7",
+  "m7",
+  "6",
+  "add9",
+  "add11",
+  "13",
+  "sus2",
+  "sus4",
+  "b5",
+  "#5",
+  "b9",
+  "#9",
+  "alt",
+];
+
+function sortedExtensions(exts: Extension[]): Extension[] {
+  return exts.slice().sort(
+    (a, b) => EXTENSION_ORDER.indexOf(a) - EXTENSION_ORDER.indexOf(b),
+  );
+}
+
 function semitoneOffset(root: RootNote, key: RootNote): number {
   const r = ROOT_NOTES.indexOf(root);
   const k = ROOT_NOTES.indexOf(key);
@@ -38,17 +65,51 @@ export function formatChord(c: Chord | Staging, key?: RootNote, roman = false): 
   if (!c.root) return "";
   const isUpper = c.quality === "major" || c.quality === "aug";
   let s: string;
+  // Tracks whether the part built so far ends with a "root-only" symbol — i.e.
+  // nothing has been appended that would prevent a trailing accidental from
+  // being misread as part of the root (Cb, C#, bIII, etc.).
+  let rootStillBare: boolean;
   if (roman && key) {
     s = romanFor(c.root, key, isUpper);
-    if (c.quality === "dim") s += "°";
-    else if (c.quality === "aug") s += "+";
+    if (c.quality === "dim") {
+      s += "°";
+      rootStillBare = false;
+    } else if (c.quality === "aug") {
+      s += "+";
+      rootStillBare = false;
+    } else {
+      rootStillBare = true; // I, ii, etc. — still parses as a numeral on its own
+    }
   } else {
     s = c.root;
-    if (c.quality === "minor") s += "m";
-    else if (c.quality === "dim") s += "dim";
-    else if (c.quality === "aug") s += "aug";
+    if (c.quality === "minor") {
+      s += "m";
+      rootStillBare = false;
+    } else if (c.quality === "dim") {
+      s += "dim";
+      rootStillBare = false;
+    } else if (c.quality === "aug") {
+      s += "aug";
+      rootStillBare = false;
+    } else {
+      rootStillBare = true; // C, F#, etc.
+    }
   }
-  for (const ext of c.extensions) s += ext;
+
+  const exts = sortedExtensions(c.extensions);
+  // Wrap leading alterations (b5/#5/b9/#9) in parens when the chord text
+  // wouldn't otherwise disambiguate them from the root — e.g., bare `Cb5`
+  // reads as "C-flat octave 5" rather than "C with flat-5". Parens make
+  // intent explicit. `alt` starts with a letter, not an accidental, so it
+  // doesn't trigger.
+  const firstStartsWithAccidental =
+    exts.length > 0 && /^[b#]/.test(exts[0]);
+  const wrap = rootStillBare && firstStartsWithAccidental;
+
+  if (wrap) s += "(";
+  for (const ext of exts) s += ext;
+  if (wrap) s += ")";
+
   if (c.bass) {
     s += "/" + (roman && key ? romanFor(c.bass, key, true) : c.bass);
   }

@@ -55,11 +55,36 @@ Chorus | Am /  /  /  | F  /  C  G  | C  /  /  /  |
 ## Notation conventions
 
 - Quality suffixes: `m`, `dim`, `aug`. Major has no suffix.
-- Extensions append directly: `Cm7`, `Gadd9`, `Dsus4`.
 - Slash chords: `G/B`.
 - Bar lines: `|`. Beats per bar: 4 (currently fixed).
-- Incompatible extensions are auto-pruned (e.g. `maj7` / `m7` clear themselves when quality switches to `dim`/`aug`).
 - Roman numerals: uppercase for major / aug, lowercase for minor / dim. Quality suffixes `°` (dim) and `+` (aug) follow the numeral. Non-diatonic chord roots prefix with `b` or `#` (e.g. `bIII`, `#IV`).
+
+### Extension vocabulary
+
+Toggle in the modifier panel, grouped by behavior:
+
+- **7th** (radio, mutually exclusive): `7`, `maj7`, `m7`
+- **Sus** (radio): `sus2`, `sus4`
+- **Add** (toggle): `6`, `add9`, `add11`, `13`
+- **Alter** (toggle): `b5`, `#5`, `b9`, `#9`, `alt`
+
+Quality-incompatible modifiers are auto-pruned or disabled (e.g. `maj7` / `m7` clear themselves when quality switches to `dim` / `aug`; `b5` / `#5` are disabled on `dim` / `aug` because the fifth is already altered by the quality).
+
+### Output ordering
+
+Extensions render in a canonical order regardless of toggle sequence: **sevenths → sixth → upper extensions → suspensions → alterations**. So clicking `b5` then `7` still renders as `C7b5`, not `Cb57`.
+
+### Ambiguous-alteration parens
+
+A leading flat-fifth / sharp-ninth could look like a note name if it followed a bare root letter. The formatter wraps the alteration in parens whenever the chord text wouldn't otherwise disambiguate it:
+
+| Input | Renders as |
+| --- | --- |
+| C major + `b5` | `C(b5)` |
+| C major + `7` + `b5` | `C7b5` (no wrap — `7` disambiguates) |
+| C minor + `b5` | `Cmb5` (no wrap — `m` disambiguates) |
+| Roman `I` + `b9` | `I(b9)` |
+| Roman `I°` + `b9` | `I°b9` (no wrap — `°` disambiguates) |
 
 ## Architecture
 

@@ -26,6 +26,13 @@ export const EXTENSIONS = [
   "sus2",
   "sus4",
   "add11",
+  "6",
+  "13",
+  "b5",
+  "#5",
+  "b9",
+  "#9",
+  "alt",
 ] as const;
 export type Extension = (typeof EXTENSIONS)[number];
 
