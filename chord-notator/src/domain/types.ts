@@ -63,6 +63,7 @@ export interface Song {
   name: string;
   key: RootNote;
   displayMode: DisplayMode;
+  showDiagrams: boolean;
   sections: Section[];
   activeSectionId: string;
   staging: Staging | null;

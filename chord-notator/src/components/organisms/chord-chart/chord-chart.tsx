@@ -3,20 +3,24 @@ import {
   CheckCircleIcon,
   DocumentDuplicateIcon,
   LinkIcon,
+  Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import { formatSong } from "domain/notation/format";
+import { ChordLegend } from "features/chord-diagrams";
 import { PrintButton } from "features/print";
 import { encodeSongToUrl } from "features/share";
 import type { Song } from "domain/types";
 
 interface Props {
   song: Song;
+  onToggleDiagrams: () => void;
 }
 
-function ChordChart({ song }: Props) {
+function ChordChart({ song, onToggleDiagrams }: Props) {
   const text = useMemo(() => formatSong(song), [song]);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
+  const hasChords = song.sections.some((s) => s.chords.length > 0);
 
   const onCopy = () => {
     if (!text) return;
@@ -52,6 +56,20 @@ function ChordChart({ song }: Props) {
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
+            onClick={onToggleDiagrams}
+            aria-pressed={song.showDiagrams}
+            className={
+              "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent-ring " +
+              (song.showDiagrams
+                ? "bg-accent/20 border-accent-ring text-accent-soft hover:bg-accent/30"
+                : "border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white")
+            }
+          >
+            <Squares2X2Icon className="w-4 h-4" />
+            Diagrams
+          </button>
+          <button
+            type="button"
             onClick={onShare}
             className="inline-flex items-center gap-2 rounded-md border border-gray-700 px-3 py-1.5 text-sm text-gray-300 hover:bg-gray-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
           >
@@ -70,6 +88,7 @@ function ChordChart({ song }: Props) {
           <PrintButton disabled={!text} />
         </div>
       </div>
+      {song.showDiagrams && hasChords && <ChordLegend song={song} />}
       {text ? (
         <pre className="font-mono text-sm text-gray-100 whitespace-pre-wrap leading-relaxed">
           {text}

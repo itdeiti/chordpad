@@ -147,7 +147,10 @@ function App() {
           {song.name}
         </h2>
 
-        <ChordChart song={song} />
+        <ChordChart
+          song={song}
+          onToggleDiagrams={() => dispatch({ type: "TOGGLE_DIAGRAMS" })}
+        />
       </div>
     </main>
   );

@@ -41,6 +41,7 @@ export function initialSong(name: string = "My Song"): Song {
     name,
     key: "C",
     displayMode: "letters",
+    showDiagrams: true,
     sections,
     activeSectionId: sections[1].id,
     staging: null,
@@ -71,7 +72,8 @@ export type SongAction =
       sectionId: string;
       fromIndex: number;
       toIndex: number;
-    };
+    }
+  | { type: "TOGGLE_DIAGRAMS" };
 
 function withStaging(song: Song, patch: Partial<Staging>): Song {
   const base: Staging = song.staging ?? emptyStaging;
@@ -223,6 +225,9 @@ export function songReducer(song: Song, action: SongAction): Song {
             : s,
         ),
       };
+
+    case "TOGGLE_DIAGRAMS":
+      return { ...song, showDiagrams: !song.showDiagrams };
   }
 }
 

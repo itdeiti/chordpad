@@ -20,11 +20,15 @@ type Persisted = PersistedV1 | PersistedV2;
 // Backfill additive fields (key, displayMode) with defaults so saves from earlier
 // versions load without a hard schema bump. Also drops staging: a half-built chord
 // shouldn't survive a reload.
+// Backfill additive fields (key, displayMode, showDiagrams) with defaults so saves
+// from earlier versions load without a hard schema bump. Also drops staging:
+// a half-built chord shouldn't survive a reload.
 function normalize(song: Song): Song {
   return {
     ...song,
     key: song.key ?? "C",
     displayMode: song.displayMode ?? "letters",
+    showDiagrams: song.showDiagrams ?? true,
     staging: null,
   };
 }

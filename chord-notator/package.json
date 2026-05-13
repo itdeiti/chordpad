@@ -43,6 +43,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@heroicons/react": "^2.2.0",
+    "@tombatossals/chords-db": "^0.5.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tone": "^15.1.22"
