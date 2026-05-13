@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/itdeiti/chordpad/compare/v3.0.0...v4.0.0) (2026-05-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* add chord diagrams to output
+
+### Features
+
+* add chord diagrams to output ([10d9bb8](https://github.com/itdeiti/chordpad/commit/10d9bb80def027d16e0417b20353a6d65b936d61))
+
 ## [3.0.0](https://github.com/itdeiti/chordpad/compare/v2.1.1...v3.0.0) (2026-05-12)
 
 
