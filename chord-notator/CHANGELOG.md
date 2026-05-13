@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.0](https://github.com/itdeiti/chordpad/compare/v5.0.0...v5.1.0) (2026-05-13)
+
+
+### Features
+
+* make chords editable ([59e95ea](https://github.com/itdeiti/chordpad/commit/59e95ea3db374c004b297c34ee0e36031966e3ad))
+
 ## [5.0.0](https://github.com/itdeiti/chordpad/compare/v4.2.0...v5.0.0) (2026-05-13)
 
 
