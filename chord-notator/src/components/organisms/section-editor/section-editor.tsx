@@ -1,20 +1,16 @@
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import {
   DndContext,
-  KeyboardSensor,
-  PointerSensor,
   closestCenter,
-  useSensor,
-  useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   rectSortingStrategy,
-  sortableKeyboardCoordinates,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import DragHandle from "components/atoms/drag-handle";
+import { useDragSensors } from "components/hooks/use-drag-sensors";
 import ChordPill from "components/molecules/chord-pill";
 import type { Chord, RootNote, Section } from "domain/types";
 
@@ -42,8 +38,14 @@ function SortablePill({
   playing,
   onDelete,
 }: SortablePillProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: chord.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: chord.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -58,15 +60,12 @@ function SortablePill({
         roman={roman}
         playing={playing}
         dragHandle={
-          <button
-            type="button"
-            aria-label={`Drag chord`}
-            className="cursor-grab active:cursor-grabbing text-gray-500 hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-accent-ring rounded-sm self-center"
-            {...attributes}
-            {...listeners}
-          >
-            <EllipsisVerticalIcon className="w-4 h-4" />
-          </button>
+          <DragHandle
+            label="Drag chord"
+            attributes={attributes}
+            listeners={listeners}
+            className="self-center text-gray-500 hover:text-gray-200"
+          />
         }
         onDelete={onDelete}
       />
@@ -82,11 +81,7 @@ function SectionEditor({
   onDeleteChord,
   onReorderChord,
 }: Props) {
-  // 5px activation distance so the × delete button stays clickable.
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-  );
+  const sensors = useDragSensors();
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;

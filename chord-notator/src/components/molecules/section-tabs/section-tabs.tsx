@@ -1,25 +1,18 @@
 import { useState, KeyboardEvent } from "react";
-import {
-  EllipsisVerticalIcon,
-  PlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import {
   DndContext,
-  KeyboardSensor,
-  PointerSensor,
   closestCenter,
-  useSensor,
-  useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   horizontalListSortingStrategy,
-  sortableKeyboardCoordinates,
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import DragHandle from "components/atoms/drag-handle";
+import { useDragSensors } from "components/hooks/use-drag-sensors";
 import IconButton from "components/atoms/icon-button";
 import type { Section } from "domain/types";
 
@@ -60,8 +53,14 @@ function SortableTab({
   onCommitRename,
   onCancelRename,
 }: TabProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: section.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: section.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -83,15 +82,12 @@ function SortableTab({
           : "bg-gray-800 border-gray-700 text-gray-200 hover:bg-gray-700"
       }`}
     >
-      <button
-        type="button"
-        aria-label={`Drag ${section.name}`}
-        className="cursor-grab active:cursor-grabbing text-current/70 hover:text-current focus:outline-none focus:ring-2 focus:ring-accent-ring rounded-sm"
-        {...attributes}
-        {...listeners}
-      >
-        <EllipsisVerticalIcon className="w-4 h-4" />
-      </button>
+      <DragHandle
+        label={`Drag ${section.name}`}
+        attributes={attributes}
+        listeners={listeners}
+        className="text-current/70 hover:text-current"
+      />
       {isEditing ? (
         <input
           autoFocus
@@ -134,11 +130,7 @@ function SectionTabs({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [draftName, setDraftName] = useState("");
 
-  // 5px activation distance so a tab tap selects/renames rather than starting a drag.
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
-  );
+  const sensors = useDragSensors();
 
   const startRename = (s: Section) => {
     setEditingId(s.id);
