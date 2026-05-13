@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef, useMemo, useState } from "react";
+import { ComponentProps, forwardRef, useState } from "react";
 import {
   CheckCircleIcon,
   DocumentDuplicateIcon,
@@ -6,7 +6,7 @@ import {
 
 type Props = Omit<ComponentProps<"div">, "className" | "onClick" | "title"> & {
   text: string;
-}
+};
 
 export const CopyButton = forwardRef<HTMLDivElement, Props>(
   ({ text, ...rest }, ref) => {
@@ -14,11 +14,6 @@ export const CopyButton = forwardRef<HTMLDivElement, Props>(
     const onClick = () => {
       navigator.clipboard?.writeText(text).then(() => setCopied(true));
     };
-
-    const Icon = useMemo(
-      () => (copied ? CheckCircleIcon : DocumentDuplicateIcon),
-      [copied]
-    );
     const title = copied ? "Copied" : "Click to copy to clipboard";
 
     return (
@@ -32,16 +27,19 @@ export const CopyButton = forwardRef<HTMLDivElement, Props>(
       >
         <span className="text-gray-900">
           <span className="inline text-gray-500" aria-hidden="true">
-            ${" "}
+            {" "}
           </span>
           {text}
         </span>
         <span className="sr-only">(click to copy to clipboard)</span>
         <div>
-          <Icon className="w-6 h-6" />
+          {copied ? (
+            <CheckCircleIcon className="w-6 h-6" />
+          ) : (
+            <DocumentDuplicateIcon className="w-6 h-6" />
+          )}
         </div>
       </div>
     );
-  }
+  },
 );
-

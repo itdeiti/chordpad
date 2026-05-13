@@ -81,6 +81,7 @@ const renderFingering = (f: Fingering) => {
         if (fret === -1) {
           return (
             <text
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={`mark-${i}`}
               x={x}
               y={y}
@@ -96,6 +97,7 @@ const renderFingering = (f: Fingering) => {
         if (fret === 0) {
           return (
             <circle
+              // eslint-disable-next-line @eslint-react/no-array-index-key
               key={`mark-${i}`}
               cx={x}
               cy={y}
@@ -141,6 +143,7 @@ const renderFingering = (f: Fingering) => {
         const y = PAD_TOP + (fret - 0.5) * FRET_GAP;
         return (
           <circle
+            // eslint-disable-next-line @eslint-react/no-array-index-key
             key={`dot-${i}`}
             cx={x}
             cy={y}
@@ -180,7 +183,9 @@ export const ChordDiagram: FC<Props> = ({ label, fingering }) => {
         className="text-muted"
         role="img"
         aria-label={
-          fingering ? `${label} chord diagram` : `${label}: no diagram available`
+          fingering
+            ? `${label} chord diagram`
+            : `${label}: no diagram available`
         }
       >
         {fingering ? renderFingering(fingering) : renderPlaceholder()}

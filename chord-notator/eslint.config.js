@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-import react from "eslint-plugin-react";
+import eslintReact from "@eslint-react/eslint-plugin";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
@@ -19,16 +19,13 @@ export default tseslint.config(
     rules: { "no-restricted-syntax": "off" },
   },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["src/**/*.{ts,tsx}"],
-    settings: {
-      // Hardcoded version to avoid eslint-plugin-react's auto-detect path,
-      // which currently fails on ESLint 10 (the plugin officially supports
-      // up to ESLint 9).
-      react: { version: "19" },
-    },
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      eslintReact.configs["recommended-typescript"],
+    ],
     plugins: {
-      react,
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
@@ -38,24 +35,22 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      // Enforce the agreed convention: components are arrow consts, not function
-      // declarations. Applies to both named (`const X = () => …`) and unnamed
-      // components (rare in this codebase).
-      "react/function-component-definition": [
-        "error",
-        {
-          namedComponents: "arrow-function",
-          unnamedComponents: "arrow-function",
-        },
-      ],
-      // Block accidental regressions to default exports. The codebase is
-      // entirely on named exports as of the convention refactor.
       "no-restricted-syntax": [
         "error",
         {
           selector: "ExportDefaultDeclaration",
           message:
             "Default exports are disallowed — use a named export (`export const X = …`).",
+        },
+        // Approximates the old `react/function-component-definition` rule
+        // (which @eslint-react doesn't ship): ban capitalised function
+        // declarations as a proxy for "components must be arrow consts".
+        // Catches `function Button() {}` by name convention; misses unnamed
+        // function components, which are rare here.
+        {
+          selector: "FunctionDeclaration[id.name=/^[A-Z]/]",
+          message:
+            "Components must be arrow consts (`const X = () => …`), not function declarations.",
         },
       ],
     },

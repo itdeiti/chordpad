@@ -101,14 +101,16 @@ export const PasteChordsDialog: FC<Props> = ({
               {tokens.map((t, i) =>
                 t.kind === "parsed" ? (
                   <span
-                    key={i}
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
+                    key={`${t.raw}-${i}`}
                     className="inline-flex items-center rounded border border-gray-700 bg-gray-800 px-2 py-0.5 font-mono text-sm text-gray-100"
                   >
                     {formatChord({ ...t.spec, id: "preview" })}
                   </span>
                 ) : (
                   <span
-                    key={i}
+                    // eslint-disable-next-line @eslint-react/no-array-index-key
+                    key={`${t.raw}-${i}`}
                     title="Couldn't parse — will be inserted as raw text"
                     className="inline-flex items-center rounded border border-dashed border-amber-500/70 bg-amber-900/30 px-2 py-0.5 font-mono text-sm italic text-amber-100"
                   >
