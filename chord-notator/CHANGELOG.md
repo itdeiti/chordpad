@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.1](https://github.com/itdeiti/chordpad/compare/v5.2.0...v5.2.1) (2026-05-13)
+
+
+### Bug Fixes
+
+* remove forwardref (react 19 not neccessary) and fix all eslint warnings ([5f1dd52](https://github.com/itdeiti/chordpad/commit/5f1dd52c54f5eb19bd8e50875df1ef20292db599))
+
 ## [5.2.0](https://github.com/itdeiti/chordpad/compare/v5.1.0...v5.2.0) (2026-05-13)
 
 
