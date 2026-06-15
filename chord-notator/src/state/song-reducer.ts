@@ -1,4 +1,5 @@
 import { arrayMove } from "@dnd-kit/sortable";
+import { formatChord } from "domain/notation/format";
 import { isExtensionAllowed } from "domain/theory/extension-rules";
 import { transposeSong } from "domain/theory/transpose";
 import type {
@@ -73,6 +74,8 @@ export type SongAction =
   | { type: "TOGGLE_EXTENSION"; ext: Extension }
   | { type: "SET_BASS"; bass: RootNote | undefined }
   | { type: "SET_BEATS"; beats: Beats }
+  | { type: "SET_STAGING_VOICING"; index: number }
+  | { type: "SET_VOICING_BY_SYMBOL"; symbol: string; index: number }
   | { type: "CLEAR_STAGING" }
   | { type: "COMMIT_CHORD" }
   | { type: "DELETE_CHORD"; sectionId: string; chordId: string }
@@ -189,16 +192,38 @@ export function songReducer(song: Song, action: SongAction): Song {
     case "SET_QUALITY": {
       // Auto-clean extensions that don't make sense under the new quality
       // (e.g. m7 / maj7 are removed when switching to dim/aug) so the user
-      // doesn't have to manually un-toggle them.
+      // doesn't have to manually un-toggle them. Changing the chord identity
+      // invalidates the selected voicing index, so reset it to the default.
       const base: Staging = song.staging ?? emptyStaging;
-      let next: Staging = { ...base, quality: action.quality };
+      let next: Staging = { ...base, quality: action.quality, voicing: 0 };
       next = pruneIncompatible(next);
       return { ...song, staging: next };
     }
 
     case "TOGGLE_EXTENSION": {
+      // Toggling an extension changes which DB shape we resolve, so the
+      // previously selected voicing no longer applies — reset to default.
       const base: Staging = song.staging ?? emptyStaging;
-      return { ...song, staging: toggleExt(base, action.ext) };
+      return { ...song, staging: { ...toggleExt(base, action.ext), voicing: 0 } };
+    }
+
+    case "SET_STAGING_VOICING":
+      return withStaging(song, { voicing: action.index });
+
+    case "SET_VOICING_BY_SYMBOL": {
+      // Legend bulk-apply: set the voicing on every chord whose rendered
+      // symbol matches, across all sections.
+      return {
+        ...song,
+        sections: song.sections.map((s) => ({
+          ...s,
+          chords: s.chords.map((c) =>
+            !c.raw && formatChord(c) === action.symbol
+              ? { ...c, voicing: action.index }
+              : c,
+          ),
+        })),
+      };
     }
 
     case "SET_BASS":
@@ -229,6 +254,7 @@ export function songReducer(song: Song, action: SongAction): Song {
                     extensions: [...song.staging!.extensions],
                     bass: song.staging!.bass,
                     beats: song.staging!.beats,
+                    voicing: song.staging!.voicing,
                   }
                 : c,
             ),
@@ -244,6 +270,7 @@ export function songReducer(song: Song, action: SongAction): Song {
         extensions: [...song.staging.extensions],
         bass: song.staging.bass,
         beats: song.staging.beats,
+        voicing: song.staging.voicing,
       };
       return {
         ...song,
@@ -281,6 +308,7 @@ export function songReducer(song: Song, action: SongAction): Song {
         extensions: [...chord.extensions],
         bass: chord.bass,
         beats: chord.beats,
+        voicing: chord.voicing,
       };
       return {
         ...song,

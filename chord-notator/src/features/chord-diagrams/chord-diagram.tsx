@@ -4,6 +4,13 @@ import type { Fingering } from "domain/theory/fingerings";
 type Props = {
   label: string;
   fingering: Fingering | null;
+  // When set, the diagram becomes a button that fires this on click/tap — used
+  // to open the voicing picker (legend) or select a voicing (picker grid).
+  onClick?: () => void;
+  // Highlights the diagram as the currently selected voicing.
+  selected?: boolean;
+  // Small corner badge, e.g. "2/5", advertising that alternatives exist.
+  badge?: string;
 };
 
 // SVG coordinates — keep small numbers so the box is dense and scales sharply.
@@ -170,11 +177,24 @@ const renderPlaceholder = () => (
   </text>
 );
 
-export const ChordDiagram: FC<Props> = ({ label, fingering }) => {
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div className="font-mono text-xs text-accent-soft tabular-nums">
-        {label}
+export const ChordDiagram: FC<Props> = ({
+  label,
+  fingering,
+  onClick,
+  selected,
+  badge,
+}) => {
+  const body = (
+    <>
+      <div className="flex items-center gap-1">
+        <span className="font-mono text-xs text-accent-soft tabular-nums">
+          {label}
+        </span>
+        {badge && (
+          <span className="rounded-full bg-gray-700 px-1.5 text-[9px] font-medium leading-tight text-gray-300 tabular-nums">
+            {badge}
+          </span>
+        )}
       </div>
       <svg
         viewBox={`0 0 ${W} ${H}`}
@@ -190,6 +210,26 @@ export const ChordDiagram: FC<Props> = ({ label, fingering }) => {
       >
         {fingering ? renderFingering(fingering) : renderPlaceholder()}
       </svg>
-    </div>
+    </>
   );
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={selected}
+        className={
+          "flex flex-col items-center gap-1 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-accent-ring " +
+          (selected
+            ? "bg-accent/20 ring-1 ring-accent-ring"
+            : "hover:bg-gray-800")
+        }
+      >
+        {body}
+      </button>
+    );
+  }
+
+  return <div className="flex flex-col items-center gap-1 p-1">{body}</div>;
 };
