@@ -1,5 +1,53 @@
 # Changelog
 
+## [6.1.0](https://github.com/itdeiti/chordpad/compare/v6.0.0...v6.1.0) (2026-06-15)
+
+
+### Features
+
+* swappable haptic feedback on tap ([568b6c1](https://github.com/itdeiti/chordpad/commit/568b6c17cbaba1bb852202dc69904af68b3e600b))
+
+## [6.0.0](https://github.com/itdeiti/chordpad/compare/v5.2.1...v6.0.0) (2026-06-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Full refactor summary — all four conventions enforced across src/:
+* add chord diagrams to output
+* add dragndrop for chords
+* allow section or song playback
+
+### Features
+
+* add a printable A4 view ([b2f63b0](https://github.com/itdeiti/chordpad/commit/b2f63b0e5336af78a7b9f0862d0616aa17a36593))
+* add audio playback via Tone.js ([83d21b3](https://github.com/itdeiti/chordpad/commit/83d21b304dba4aec6bae3f87384be27a7eff1a3e))
+* add chord diagrams to output ([10d9bb8](https://github.com/itdeiti/chordpad/commit/10d9bb80def027d16e0417b20353a6d65b936d61))
+* add circle of fifths ([884a0bc](https://github.com/itdeiti/chordpad/commit/884a0bcefdd0ea233ca66db3d732adf2d47fb798))
+* add clear-all button to reset the song ([e7e8a4b](https://github.com/itdeiti/chordpad/commit/e7e8a4b8dfc7c69cd782184248790d7165031fcb))
+* add dragndrop for chords ([4abecb4](https://github.com/itdeiti/chordpad/commit/4abecb4cc8a569036096bfd81d6516e548c70a81))
+* add more chord extensions ([ce26b72](https://github.com/itdeiti/chordpad/commit/ce26b728df0a61168c4479da19a33949bcb9e634))
+* add per-chord beat duration and aligned bar output ([8cc6eb5](https://github.com/itdeiti/chordpad/commit/8cc6eb5883d87e241fd12f44fb138616e7d89efa))
+* add the ability to paste raw chords and parse them. implement tests for parsing ([360b4ce](https://github.com/itdeiti/chordpad/commit/360b4cef23665d76346bc3c695c7a8a00a6d3d41))
+* allow section or song playback ([57bd685](https://github.com/itdeiti/chordpad/commit/57bd685fa105f464d6a0a2eef82cab348a516a1b))
+* alternative fingerings and tap-to-identify chords ([796c992](https://github.com/itdeiti/chordpad/commit/796c992ad72ae64d72dfc36841eb3cbed4e13f56))
+* make chords editable ([59e95ea](https://github.com/itdeiti/chordpad/commit/59e95ea3db374c004b297c34ee0e36031966e3ad))
+* persist song state to localStorage ([511a999](https://github.com/itdeiti/chordpad/commit/511a9991827a3b66e316ea2e47505e5395772422))
+* **playback:** better visual feedback for song playback. highlighting steps to all sections now ([50dbcf0](https://github.com/itdeiti/chordpad/commit/50dbcf0884a39072b83d69bd9204437d37050272))
+* song-reducer.ts — added DUPLICATE_SECTION action + nextCopyName helper. Inserts clone right after the source, gives fresh UUIDs to the section and each chord, makes the clone active, clears staging. Naming: "Verse" → "Verse copy" → "Verse copy 2" → "Verse copy 3". ([650672f](https://github.com/itdeiti/chordpad/commit/650672f8ee4a2c1cc3544c4910b9b60bc11423a2))
+* support multiple songs with a library and song picker ([03f7d58](https://github.com/itdeiti/chordpad/commit/03f7d58fc7a53cc4ee2084dfbaf760d0e7753078))
+
+
+### Bug Fixes
+
+* add logic so dragging works on mobile devices ([610f9af](https://github.com/itdeiti/chordpad/commit/610f9af03fb3abeffd3a672f388fe1a81f87bbda))
+* fix vulnerabilities ([9c8feec](https://github.com/itdeiti/chordpad/commit/9c8feec8bedaad12ae3f41ce0167cec39531348f))
+* Full refactor summary — all four conventions enforced across src/: ([2e33e3a](https://github.com/itdeiti/chordpad/commit/2e33e3a28b556f8f81f1667161d8f6a21948a1b4))
+* migrate from eslint-plugin-react and use @eslint-react/eslint-plugin ([463a66a](https://github.com/itdeiti/chordpad/commit/463a66a095c60d1d9afccf169c8a3f7367734bb6))
+* no default export ([c9d507f](https://github.com/itdeiti/chordpad/commit/c9d507fa3d94902b21e53e72ed0cc86699f6d88e))
+* remove forwardref (react 19 not neccessary) and fix all eslint warnings ([5f1dd52](https://github.com/itdeiti/chordpad/commit/5f1dd52c54f5eb19bd8e50875df1ef20292db599))
+* resolve dependancy issues bump eslint to 10 and make eslint and eslint js a group for dependabot ([f3dc0a2](https://github.com/itdeiti/chordpad/commit/f3dc0a267b17234bffdbc93f89cc38af9d41e77d))
+* whole width for modal ([ea63b54](https://github.com/itdeiti/chordpad/commit/ea63b546f120e720ba6c9f702488367e902a6115))
+
 ## [5.2.1](https://github.com/itdeiti/chordpad/compare/v5.2.0...v5.2.1) (2026-05-13)
 
 
