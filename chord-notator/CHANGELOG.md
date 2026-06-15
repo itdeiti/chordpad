@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.0](https://github.com/itdeiti/chordpad/compare/v6.0.0...v6.1.0) (2026-06-15)
+
+
+### Features
+
+* swappable haptic feedback on tap ([568b6c1](https://github.com/itdeiti/chordpad/commit/568b6c17cbaba1bb852202dc69904af68b3e600b))
+
 ## [6.0.0](https://github.com/itdeiti/chordpad/compare/v5.2.1...v6.0.0) (2026-06-15)
 
 
