@@ -52,7 +52,7 @@ export const ChordBuilder: FC<Props> = ({ staging, editing, dispatch }) => {
   }, [dispatch, staging?.root]);
 
   return (
-    <div className="space-y-4 rounded-lg border border-gray-800 bg-gray-900/40 p-4">
+    <div className="space-y-4">
       <StagingPreview
         staging={staging}
         beats={view.beats}

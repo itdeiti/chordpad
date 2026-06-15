@@ -27,6 +27,28 @@
     }
   }
 
+  /* Input-dock panel entrance — slides in from the side the swipe came from. */
+  @keyframes dock-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes dock-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-1.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   main {
     @apply px-4 min-h-screen sm:px-0 space-y-16 w-full bg-gray-900;
     background-image: radial-gradient(
@@ -38,5 +60,19 @@
     background-position: 0 0, 25px 25px;
     -webkit-animation: slide 2s linear infinite;
     animation: slide 4s linear infinite;
+  }
+}
+
+@utility animate-dock-in-right {
+  animation: dock-in-right 220ms ease-out;
+}
+@utility animate-dock-in-left {
+  animation: dock-in-left 220ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dock-in-right,
+  .animate-dock-in-left {
+    animation: none;
   }
 }

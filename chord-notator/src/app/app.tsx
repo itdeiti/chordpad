@@ -1,13 +1,11 @@
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { PasteChordsDialog } from "components/molecules/paste-chords-dialog";
 import { SectionTabs } from "components/molecules/section-tabs";
 import { SongPicker } from "components/molecules/song-picker";
 import { SongToolbar } from "components/molecules/song-toolbar";
-import { ChordBuilder } from "components/organisms/chord-builder";
+import { InputDock } from "components/organisms/input-dock";
 import { SectionEditor } from "components/organisms/section-editor";
 import { ChordChart } from "components/organisms/chord-chart";
-import { ChordIdentifier } from "features/chord-identifier";
 import { CircleOfFifths } from "features/circle-of-fifths";
 import { PlaybackControls, usePlayback } from "features/playback";
 import { useLibrary } from "state/use-library";
@@ -15,8 +13,6 @@ import { useLibrary } from "state/use-library";
 export const App: FC = () => {
   const { library, song, dispatch } = useLibrary();
   const playback = usePlayback(song);
-  const [pasteOpen, setPasteOpen] = useState(false);
-  const [identifyOpen, setIdentifyOpen] = useState(false);
 
   // Playback follow: when the transport enters a new section, focus that
   // section so the chord-pill highlight stays visible. FOCUS_SECTION (vs
@@ -147,14 +143,16 @@ export const App: FC = () => {
                 toIndex,
               })
             }
-            onOpenPaste={() => setPasteOpen(true)}
-            onOpenIdentify={() => setIdentifyOpen(true)}
           />
-          <ChordIdentifier
-            open={identifyOpen}
+        </div>
+
+        <div data-print-hide>
+          <InputDock
+            staging={song.staging}
+            editing={song.editingChordId !== null}
             sectionName={activeSection.name}
-            onClose={() => setIdentifyOpen(false)}
-            onInsert={(spec) =>
+            dispatch={dispatch}
+            onInsertIdentified={(spec) =>
               dispatch({
                 type: "INGEST_CHORDS",
                 sectionId: activeSection.id,
@@ -162,33 +160,18 @@ export const App: FC = () => {
                 mode: "append",
               })
             }
+            onPaste={(chords, mode) =>
+              dispatch({
+                type: "INGEST_CHORDS",
+                sectionId: activeSection.id,
+                chords,
+                mode,
+              })
+            }
           />
-          {pasteOpen && (
-            <PasteChordsDialog
-              open={pasteOpen}
-              sectionName={activeSection.name}
-              onClose={() => setPasteOpen(false)}
-              onSubmit={(chords, mode) =>
-                dispatch({
-                  type: "INGEST_CHORDS",
-                  sectionId: activeSection.id,
-                  chords,
-                  mode,
-                })
-              }
-            />
-          )}
         </div>
 
         <CircleOfFifths section={activeSection} />
-
-        <div data-print-hide>
-          <ChordBuilder
-            staging={song.staging}
-            editing={song.editingChordId !== null}
-            dispatch={dispatch}
-          />
-        </div>
 
         <h2 data-print-only className="text-2xl font-bold text-black mb-4">
           {song.name}
