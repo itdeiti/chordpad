@@ -62,7 +62,7 @@ export const ChordIdentifier: FC<Props> = ({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-lg border border-gray-700 bg-gray-900 p-5 shadow-xl"
+        className="w-full rounded-lg border border-gray-700 bg-gray-900 p-5 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
