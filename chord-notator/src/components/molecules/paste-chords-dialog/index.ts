@@ -1,1 +1,1 @@
-export { PasteChordsDialog } from "./paste-chords-dialog";
+export { PastePanel } from "./paste-panel";
