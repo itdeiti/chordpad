@@ -47,6 +47,11 @@ export type Chord = {
   extensions: Extension[];
   bass?: RootNote;
   beats: Beats;
+  // Which voicing (alternative fingering) to display, as an index into the
+  // matched chord-DB entry's `positions` array. Absent ⇒ 0 (first voicing).
+  // The index is clamped at render time so a stale value can't crash the
+  // diagram if the matched shape set changes.
+  voicing?: number;
   // When present, the chord couldn't be parsed (e.g. pasted "Xyz") and renders
   // as the raw text. Such chords skip transpose, playback, and the diagram
   // legend; root/quality/extensions are placeholder values.
@@ -69,6 +74,8 @@ export type Staging = {
   extensions: Extension[];
   bass?: RootNote;
   beats: Beats;
+  // Selected voicing index for the chord being built (see Chord.voicing).
+  voicing?: number;
 }
 
 export type DisplayMode = "letters" | "roman";

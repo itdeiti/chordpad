@@ -104,13 +104,11 @@ export function chordToDbSuffix(chord: Chord): string {
   if (hasAdd11) return "11";
   return "major";
 }
-// Try progressively simpler chord shapes until one matches. The label shown
-// above the diagram is always the *original* chord symbol — only the shape
-// degrades when we can't find an exact voicing.
-export function lookupFingering(
-  chord: Chord,
-  db: ChordDb,
-): Fingering | null {
+// Resolve the DB entry for a chord by trying progressively simpler shapes
+// until one matches. The label shown above the diagram is always the
+// *original* chord symbol — only the shape degrades when we can't find an
+// exact voicing.
+function lookupEntry(chord: Chord, db: ChordDb): DbChordEntry | null {
   const dbKey = ROOT_TO_DB_KEY[chord.root];
   const entries: DbChordEntry[] | undefined = db.chords[dbKey];
   if (!entries) return null;
@@ -138,7 +136,22 @@ export function lookupFingering(
 
   for (const suffix of tries) {
     const match = entries.find((e) => e.suffix === suffix);
-    if (match && match.positions[0]) return match.positions[0];
+    if (match && match.positions[0]) return match;
   }
   return null;
+}
+
+// All available voicings (alternative fingerings) for a chord, in DB order.
+// Empty when no shape matches. Used by the voicing pickers.
+export function lookupFingerings(chord: Chord, db: ChordDb): Fingering[] {
+  return lookupEntry(chord, db)?.positions ?? [];
+}
+
+// The single voicing to display for a chord, honoring `chord.voicing` and
+// clamping it so a stale/out-of-range index falls back to a valid shape.
+export function lookupFingering(chord: Chord, db: ChordDb): Fingering | null {
+  const positions = lookupFingerings(chord, db);
+  if (positions.length === 0) return null;
+  const index = Math.min(Math.max(chord.voicing ?? 0, 0), positions.length - 1);
+  return positions[index];
 }

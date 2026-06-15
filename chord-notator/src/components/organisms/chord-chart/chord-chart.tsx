@@ -10,13 +10,15 @@ import { ChordLegend } from "features/chord-diagrams";
 import { PrintButton } from "features/print";
 import { encodeSongToUrl } from "features/share";
 import type { Song } from "domain/types";
+import type { SongAction } from "state/song-reducer";
 
 type Props = {
   song: Song;
+  dispatch: (a: SongAction) => void;
   onToggleDiagrams: () => void;
 }
 
-export const ChordChart: FC<Props> = ({ song, onToggleDiagrams }) => {
+export const ChordChart: FC<Props> = ({ song, dispatch, onToggleDiagrams }) => {
   const text = useMemo(() => formatSong(song), [song]);
   const [copied, setCopied] = useState(false);
   const [shared, setShared] = useState(false);
@@ -88,7 +90,9 @@ export const ChordChart: FC<Props> = ({ song, onToggleDiagrams }) => {
           <PrintButton disabled={!text} />
         </div>
       </div>
-      {song.showDiagrams && hasChords && <ChordLegend song={song} />}
+      {song.showDiagrams && hasChords && (
+        <ChordLegend song={song} dispatch={dispatch} />
+      )}
       {text ? (
         <pre className="font-mono text-sm text-gray-100 whitespace-pre-wrap leading-relaxed">
           {text}

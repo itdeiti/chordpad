@@ -7,6 +7,7 @@ import { SongToolbar } from "components/molecules/song-toolbar";
 import { ChordBuilder } from "components/organisms/chord-builder";
 import { SectionEditor } from "components/organisms/section-editor";
 import { ChordChart } from "components/organisms/chord-chart";
+import { ChordIdentifier } from "features/chord-identifier";
 import { CircleOfFifths } from "features/circle-of-fifths";
 import { PlaybackControls, usePlayback } from "features/playback";
 import { useLibrary } from "state/use-library";
@@ -15,6 +16,7 @@ export const App: FC = () => {
   const { library, song, dispatch } = useLibrary();
   const playback = usePlayback(song);
   const [pasteOpen, setPasteOpen] = useState(false);
+  const [identifyOpen, setIdentifyOpen] = useState(false);
 
   // Playback follow: when the transport enters a new section, focus that
   // section so the chord-pill highlight stays visible. FOCUS_SECTION (vs
@@ -146,6 +148,20 @@ export const App: FC = () => {
               })
             }
             onOpenPaste={() => setPasteOpen(true)}
+            onOpenIdentify={() => setIdentifyOpen(true)}
+          />
+          <ChordIdentifier
+            open={identifyOpen}
+            sectionName={activeSection.name}
+            onClose={() => setIdentifyOpen(false)}
+            onInsert={(spec) =>
+              dispatch({
+                type: "INGEST_CHORDS",
+                sectionId: activeSection.id,
+                chords: [spec],
+                mode: "append",
+              })
+            }
           />
           {pasteOpen && (
             <PasteChordsDialog
@@ -180,6 +196,7 @@ export const App: FC = () => {
 
         <ChordChart
           song={song}
+          dispatch={dispatch}
           onToggleDiagrams={() => dispatch({ type: "TOGGLE_DIAGRAMS" })}
         />
       </div>
