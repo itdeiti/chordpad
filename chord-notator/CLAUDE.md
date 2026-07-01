@@ -12,7 +12,7 @@ This document helps AI assistants like Claude understand and work effectively wi
 - **Vite 7.2.4** - Next-generation frontend build tool
 - **React 19.2.0** - Latest React with improved performance
 - **TypeScript 5.9.3** - Strict type checking enabled
-- **Node.js**: >=18 required
+- **Node.js**: >=20 required (CI runs Node 24)
 - **Package Manager**: Yarn >=1.22.5
 
 ### Styling
