@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.1](https://github.com/itdeiti/chordpad/compare/v6.1.0...v6.1.1) (2026-07-01)
+
+
+### Bug Fixes
+
+* **voicing-picker:** rename label from fingerings to Inversions ([d2cda4c](https://github.com/itdeiti/chordpad/commit/d2cda4c938cf37eb97db1d22d143a44afd69eda4))
+
 ## [6.1.0](https://github.com/itdeiti/chordpad/compare/v6.0.0...v6.1.0) (2026-06-15)
 
 
