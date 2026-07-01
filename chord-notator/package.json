@@ -29,7 +29,7 @@
     "not IE 11"
   ],
   "engines": {
-    "node": ">=18",
+    "node": ">=20",
     "yarn": ">=1.22.5"
   },
   "scripts": {
