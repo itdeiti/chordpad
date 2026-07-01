@@ -44,7 +44,7 @@ export const VoicingPicker: FC<Props> = ({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-lg font-semibold text-purple-200">
-          {label} · fingerings
+          {label} · Inversions
         </h2>
         <p className="mt-1 text-xs text-gray-400">
           {positions.length > 1
